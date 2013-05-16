@@ -114,7 +114,7 @@ public class InformationAboutAnimal extends JFrame {
 			
 		}
 	public void repaintInfo() {
-		labelIsMaleInfo.setText(String.valueOf(infoAnimal.isMale()));
+		if (infoAnimal.isMale()) {labelIsMaleInfo.setText("самец");} else {labelIsMaleInfo.setText("самка");}
 		labelStarvationInfo.setText(String.valueOf((((int)(infoAnimal.getStarvation()*100))/100))+" %");
 		labelExhaustionInfo.setText(String.valueOf(((int)(infoAnimal.getExhaustion()*100))/100)+" %");
 		labelPassionInfo.setText(String.valueOf(((int)(infoAnimal.getPassion()*100))/100)+" %");

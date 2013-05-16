@@ -80,6 +80,7 @@ class StartLife extends JFrame {
 		GrassThread grassThread=new GrassThread();
 		
 		do {
+			System.out.println("");
 			if (Information.worldCreated()) {  //запускаем нити только если знаем, что мир сформирован
 			
 		quantTime=Information.getQuantTime();

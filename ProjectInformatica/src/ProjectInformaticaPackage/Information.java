@@ -77,7 +77,7 @@ public class Information {                //этот класс занимается считыванием вс
 			linkedListOfLeos.add(new Leo(rand.nextBoolean(), 
 					rand.nextInt(defaultWeight), 
 					rand.nextInt(defaultHeight), 
-						rand.nextInt(500), 
+						100+rand.nextInt(400), 
 							100, 100, 100,    
 							(float)(0.1+rand.nextInt(3)/5),
 							(float)rand.nextInt(7)/10,
