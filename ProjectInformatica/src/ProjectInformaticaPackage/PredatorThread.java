@@ -39,6 +39,16 @@ public class PredatorThread implements Runnable {
 		this.a=a;
 		this.b=b;
 	}*/
+	
+	
+	Thread predator;
+	
+	PredatorThread () {
+		predator=new Thread();
+		predator.start();
+	}
+	
+	
 	@Override
 	public void run() {
 		for (Iterator<Leo> current = Information.getLinkedListOfLeos().iterator(); current.hasNext(); ) {
@@ -50,6 +60,10 @@ public class PredatorThread implements Runnable {
 		
 		Information.checkIsLeoBorn();
 	}
+	
+	
+	
+	
 	
 	
 	

@@ -88,10 +88,14 @@ class StartLife extends JFrame {
 			predatorThread.run();      //эти три потока- для животных и травы
 			herbivoreThread.run();
 			grassThread.run();
-			
 			try {
 				Thread.sleep(quantTime);/*чтобы успеть просмотреть*/ 
 				} catch (Exception e) {}
+			try {
+			predatorThread.predator.join();
+			predatorThread.predator.join();
+			predatorThread.predator.join();
+			} catch (InterruptedException e) {System.out.println("Can't wait threads");}
 			frame.repaint();
 		}	
 			}

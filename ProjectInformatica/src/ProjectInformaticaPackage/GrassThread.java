@@ -3,6 +3,13 @@ package ProjectInformaticaPackage;
 import java.util.Iterator;
 
 public class GrassThread implements Runnable {
+	
+Thread grass;
+	
+	GrassThread () {
+		grass=new Thread();
+		grass.start();
+	}
 
 	@Override
 	public void run() {

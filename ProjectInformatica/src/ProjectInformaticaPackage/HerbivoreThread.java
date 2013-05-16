@@ -3,6 +3,13 @@ package ProjectInformaticaPackage;
 import java.util.Iterator;
 
 public class HerbivoreThread implements Runnable {
+	
+Thread herbivore;
+	
+	HerbivoreThread () {
+		herbivore=new Thread();
+		herbivore.start();
+	}
 
 	@Override
 	public void run() {
