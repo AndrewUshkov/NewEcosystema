@@ -1,14 +1,14 @@
 package ProjectInformaticaPackage;
 
-public class LeoWish implements Comparable<LeoWish>{    //сейчас этот класс не используется
+public class AnimalWish implements Comparable<AnimalWish>{    //сейчас этот класс не используется
 	private int numberOfLeoNeed;
 	private float valueOfWish;
 	
-	public LeoWish(int number, float value) {
+	public AnimalWish(int number, float value) {
 		this.numberOfLeoNeed=number;
 		this.valueOfWish=value;
 	}
-	public int getNumberOfLeoNeed() {
+	public int getNumberOfAnimalNeed() {
 		return numberOfLeoNeed;
 	}
 	public void setNumberOfLeoNeed(int numberOfLeoNeed) {
@@ -20,9 +20,9 @@ public class LeoWish implements Comparable<LeoWish>{    //сейчас этот класс не и
 	public void setValueOfWish(float valueOfWish) {
 		this.valueOfWish = valueOfWish;
 	}
-	public int compareTo(LeoWish a) {
-		if (a.valueOfWish>this.valueOfWish) return 1;
-		if (a.valueOfWish<this.valueOfWish) return -1;
+	public int compareTo(AnimalWish a) {
+		if (a.valueOfWish>this.valueOfWish) return -1;   //так сделал return, чтобы массив сортировался
+		if (a.valueOfWish<this.valueOfWish) return 1;    // в порядке убывания
 		return 0;
 	}
 	

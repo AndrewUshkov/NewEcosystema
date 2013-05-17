@@ -38,6 +38,7 @@ private boolean isChild=true;
 private char previousAction=0;
 private Herbivore badFemale=null;                                        //самка, несогласная на спаривание
 public int timeOfInertion= this.isChild ? 30:0;
+public AnimalWish wish[]= {new AnimalWish(0,0), new AnimalWish(0,0), new AnimalWish(0,0)};
 private boolean hasNoThread=true;
 private boolean isAlive=true;
 private boolean bigCursor=false;
@@ -167,10 +168,10 @@ public Image getAnimalImage() {
 		if ((this.meat>=40)&&(this.meat<80)) {return Information.getImageMiddleMeat();} else
 			Information.getImageFewMeat();
 	}
-	return Information.getImageHerbivore();
+	return Information.getImageFewMeat();
 }
 public boolean femaleAgree() {
-	if ((passion<=50)&&(this.previousAction!=3)) return true; return false;
+	if ((passion<=80)&&(this.previousAction!=3)) return true; return false;
 }
 public CoordinatesXY goToNearestPredator() {
 	CoordinatesXY Coords=new CoordinatesXY();
@@ -218,7 +219,7 @@ public CoordinatesXY goToNearestPredator() {
 public void setFromWhom(Herbivore FromWhom) {
 	this.fromWhom=FromWhom;
 }
-public void goToNearestGrass() {
+public boolean goToNearestGrass() {
 	if (!Information.getLinkedListOfGrass().isEmpty()) {
 	Grass nearestGrass=Information.getLinkedListOfGrass().getFirst();
 	int nearestDistance=(nearestGrass.getXPosition()-this.xPosition)*(nearestGrass.getXPosition()-this.xPosition)+(nearestGrass.getYPosition()-this.yPosition)*(nearestGrass.getYPosition()-this.yPosition);
@@ -242,8 +243,9 @@ public void goToNearestGrass() {
 		this.starvation+=nearestGrass.getEnergyValue();
 		if (this.starvation>100) this.starvation=100;
 			}
+	return true;
 	
-	}
+	} else return false;
 }
 public boolean wantToBorn() {
 	return this.wantToBorn;
@@ -275,9 +277,12 @@ private void tryMakeChildren(Herbivore female) {
 				//Information.getLinkedListOfHerbivores().add(new Herbivore(true, this.getXPosition(), this.getYPosition(), 400, 50, 100, 100,     (float)1,1,3,   0,0,0));
 				female.setFromWhom(this);
 				female.becomePregnant();
-				System.out.println("Pregnant");
+				//System.out.println("Pregnant");
 				} else {
+					if (female.previousAction!=3) {
 					this.badFemale=female;
+					this.timeOfInertion=0;
+					}
 				}
 				
 	
@@ -286,9 +291,10 @@ private void tryMakeChildren(Herbivore female) {
 
 
 
-private int feelPassion(Herbivore badFemale) {
+private boolean feelPassion(Herbivore badFemale) {
 if (this.isMale()) {
-	if (!Information.getLinkedListOfHerbivores().isEmpty()) {
+	int numberFemaleChildren=0;
+	if (Information.getLinkedListOfHerbivores().size()>1) {
 		//LifeForm nearestHerbivore=Information.getLinkedListOfLifeForms().getFirst();
 		Herbivore nearestHerbivore=null;
 		Herbivore currentHerbivore;
@@ -296,6 +302,7 @@ if (this.isMale()) {
 		int nearestDistance=-1;
 		for (Iterator<Herbivore> current = Information.getLinkedListOfHerbivores().iterator(); current.hasNext(); ) {
 			currentHerbivore=current.next();
+			if ((currentHerbivore.isChild())&&(!currentHerbivore.isMale())) {numberFemaleChildren++;}   //смотрим, есть ли "несовершеннолетние" травоядные самки
 			if (    (nearestHerbivore==null)&&( ((!currentHerbivore.isMale()))          )&&(!currentHerbivore.isChild())
 					&& (currentHerbivore.timeOfPregnant==-1)
 								&& (!currentHerbivore.equals(badFemale))
@@ -305,44 +312,36 @@ if (this.isMale()) {
 				nearestDistance=(nearestHerbivore.getXPosition()-this.xPosition)*(nearestHerbivore.getXPosition()-this.xPosition)+(nearestHerbivore.getYPosition()-this.yPosition)*(nearestHerbivore.getYPosition()-this.yPosition);
 					}
 			if ((nearestHerbivore!=null)&&(nearestHerbivore!=currentHerbivore)  &&
-					    ((!currentHerbivore.isMale()))&&(!currentHerbivore.isChild())&& (currentHerbivore.timeOfPregnant==-1)         ) {
+					    (!currentHerbivore.isMale())&&(!currentHerbivore.isChild())&& (currentHerbivore.timeOfPregnant==-1) && (!currentHerbivore.equals(badFemale))         ) {
 				currentDistance=(currentHerbivore.getXPosition()-this.xPosition)*(currentHerbivore.getXPosition()-this.xPosition)+(currentHerbivore.getYPosition()-this.yPosition)*(currentHerbivore.getYPosition()-this.yPosition);
 				if (currentDistance<nearestDistance) {nearestDistance=currentDistance; nearestHerbivore=currentHerbivore;}
 				
 			}
 			
 		}
-		if (nearestHerbivore==null) {return -1;}
-		if (nearestHerbivore.getXPosition()>=this.xPosition) {this.xPosition+=4;} else this.xPosition-=4;
-		if (nearestHerbivore.getYPosition()>=this.yPosition) {this.yPosition+=4;} else this.yPosition-=4;
-		if (this.xPosition>=Information.getDefaultWeight()) {this.xPosition-=Information.getDefaultWeight();}
-		if (this.xPosition<=0) {this.xPosition+=Information.getDefaultWeight();}
-		if (this.yPosition>=Information.getDefaultHeight()) {this.yPosition-=Information.getDefaultHeight();}
-		if (this.yPosition<=0) {this.yPosition+=Information.getDefaultHeight();}
-		if (      (nearestDistance<=Information.getSizeOfCell())&&
+		
+		
+		
+		if ((nearestHerbivore==null)&&(numberFemaleChildren==0)) {this.timeOfInertion=0; return false;} else {
+			if (nearestHerbivore!=null) {
+			if (nearestHerbivore.getXPosition()>=this.xPosition) {this.xPosition+=4;} else this.xPosition-=4;
+			if (nearestHerbivore.getYPosition()>=this.yPosition) {this.yPosition+=4;} else this.yPosition-=4;
+			if (this.xPosition>=Information.getDefaultWeight()) {this.xPosition-=Information.getDefaultWeight();}
+			if (this.xPosition<=0) {this.xPosition+=Information.getDefaultWeight();}
+			if (this.yPosition>=Information.getDefaultHeight()) {this.yPosition-=Information.getDefaultHeight();}
+			if (this.yPosition<=0) {this.yPosition+=Information.getDefaultHeight();}
+			if (      (nearestDistance<=Information.getSizeOfCell())&&
 									(this.isMale())		) {this.tryMakeChildren(nearestHerbivore);}
-		return 0;
-		//int nearestDistance=(nearestHerbivore.getXPosition()-this.xPosition)*(nearestHerbivore.getXPosition()-this.xPosition)+(nearestHerbivore.getYPosition()-this.yPosition)*(nearestHerbivore.getYPosition()-this.yPosition);
-		
-		/*Herbivore newCurrentHerbivore;
-		for (Iterator<Herbivore> current = Information.getLinkedListOfHerbivores().iterator(); current.hasNext(); ) {
-		    newCurrentHerbivore = current.next();
-		    currentDistance=(newCurrentHerbivore.getXPosition()-this.xPosition)*(newCurrentHerbivore.getXPosition()-this.xPosition)+(newCurrentHerbivore.getYPosition()-this.yPosition)*(newCurrentHerbivore.getYPosition()-this.yPosition);
-		    
-		    if (currentDistance<nearestDistance) {nearestHerbivore=(Herbivore)newCurrentHerbivore; nearestDistance=currentDistance;}
+			return true;
+			
+			}	return true;
 		}
-		
-		if (nearestHerbivore!=null) {
-		if (nearestHerbivore.getXPosition()>=this.xPosition) {this.xPosition+=4;} else this.xPosition-=4;
-		if (nearestHerbivore.getYPosition()>=this.yPosition) {this.yPosition+=4;} else this.yPosition-=4;
-		//if (nearestDistance<=Information.getSizeOfCell()) {this.starvation+=nearestGrass.getEnergyValue();}
-		}*/
-		} else return -1;
-} else return 0;
+	} else return false;
+} else return false;
 }
 
 private void bornNewHerbivore() {
-	System.out.println("Born new Herbivore");
+	//System.out.println("Born new Herbivore");
 	this.exhaustion-=10;
 	this.starvation-=10;
 	this.wantToBorn=true;
@@ -361,10 +360,11 @@ public void eatMeat(int meat) {
 	this.meat-=meat;
 	if (this.meat<=0) {this.timeOfInertion=0;}
 }
-private void feelSleepy() {
+private boolean feelSleepy() {
 	if (this.exhaustion<2*this.exhaustionCoefficient) {
 		this.exhaustion+=2*this.exhaustionCoefficient;
 		} else this.exhaustion=100;
+	return true;
 }
 private int getDecision() {
 	
@@ -411,10 +411,23 @@ private int getDecision() {
 	
 	if (this.isAlive) this.meat=(int)(this.starvation+this.age)/2;
 	
-	if ((this.starvation<=this.exhaustion)&&(this.starvation<=this.passion)) {this.previousAction=1; this.timeOfInertion=10; return 1;}
-	if ((this.starvation>=this.passion)&&(this.passion<=this.exhaustion)) {this.previousAction=2; this.timeOfInertion=5; return 2;}
-	if ((this.starvation>=this.exhaustion)&&(this.exhaustion<=this.passion)) {this.previousAction=3; this.timeOfInertion=20; return 3;}
-	return 3;
+	this.wish[0]=new AnimalWish(1,this.starvation);    
+	this.wish[1]=new AnimalWish(2,this.passion);
+	this.wish[2]=new AnimalWish(3,this.exhaustion);
+	
+	Arrays.sort(wish);        //сортируем желания травоядного по степени важности
+	this.previousAction=(char)wish[0].getNumberOfAnimalNeed();
+	
+	if (wish[0].getNumberOfAnimalNeed()==1) this.timeOfInertion=10;
+	if (wish[0].getNumberOfAnimalNeed()==2) this.timeOfInertion=5;
+	if (wish[0].getNumberOfAnimalNeed()==3) this.timeOfInertion=20;
+	return wish[0].getNumberOfAnimalNeed();
+	
+	
+	//if ((this.starvation<=this.exhaustion)&&(this.starvation<=this.passion)) {this.previousAction=1; this.timeOfInertion=10; return 1;}
+	//if ((this.starvation>=this.passion)&&(this.passion<=this.exhaustion)) {this.previousAction=2; this.timeOfInertion=5; return 2;}
+	//if ((this.starvation>=this.exhaustion)&&(this.exhaustion<=this.passion)) {this.previousAction=3; this.timeOfInertion=20; return 3;}
+	//return 3;
 	} else {
 			this.timeOfInertion--;
 			if ((!this.isChild)&&(this.isAlive)) {
@@ -454,6 +467,13 @@ private int getDecision() {
 	}
 }
 
+private boolean doActionWithNumber(int number) {
+	if (number==1) return this.goToNearestGrass();
+	if (number==2) return this.feelPassion(this.badFemale);
+	if (number==3) return this.feelSleepy();
+	return false;
+}
+
 public void setWantToBorn(boolean a) {
 	this.wantToBorn=a;
 }
@@ -461,33 +481,53 @@ public boolean makeDecision() {
 	decision=this.getDecision();
 	if (decision==7) {this.previousAction=7;}
 	if (decision==0) {return false;}
-	if (decision==1) {System.out.println("Hungry "+this.starvation+" "+this.exhaustion+" "+this.passion); this./*feelHungry();*/goToNearestGrass();}
-	if (decision==2) {System.out.println("Passion "+this.starvation+" "+this.exhaustion+" "+this.passion); if (this.feelPassion(this.badFemale)==-1) {}}
-	//if (decision==4) {this.feelKillInstinct();}
-	if (decision==3) {System.out.println("Sleep "+this.starvation+" "+this.exhaustion+" "+this.passion); this.feelSleepy();}
-	if (decision==5) {System.out.println("Want to born"); this.bornNewHerbivore();}
+	if (decision==5) {/*System.out.println("Want to born");*/ this.bornNewHerbivore();}
 	if ((decision==6)&&(this.isAlive)) {
-			System.out.println("Previous action"); 
-			switch (this.previousAction) {
-			case 0:
-				System.out.println("Childhood");
-			break;
-			case 1:
-				System.out.println("Hungry "+this.starvation+" "+this.exhaustion+" "+this.passion); this./*feelHungry();*/goToNearestGrass();
-			break;
-			case 2:
-				System.out.println("Passion "+this.starvation+" "+this.exhaustion+" "+this.passion); if (this.feelPassion(this.badFemale)==-1) {}
-			break;
-			case 3:
-				System.out.println("Sleep "+this.starvation+" "+this.exhaustion+" "+this.passion); this.feelSleepy();
-			break;
-			/*case 4:
-				this.feelKillInstinct();
-			break;*/
-			case 8:
-			break;
-			}
-			}
+		//System.out.println("Previous action"); 
+		switch (this.previousAction) {
+		case 0:
+			//System.out.println("Childhood");
+		break;
+		case 1:
+			/*System.out.println("Hungry "+this.starvation+" "+this.exhaustion+" "+this.passion);*/ this./*feelHungry();*/goToNearestGrass();
+		break;
+		case 2:
+			/*System.out.println("Passion "+this.starvation+" "+this.exhaustion+" "+this.passion);*/ this.feelPassion(this.badFemale);
+		break;
+		case 3:
+			/*System.out.println("Sleep "+this.starvation+" "+this.exhaustion+" "+this.passion);*/ this.feelSleepy();
+		break;
+		/*case 4:
+			this.feelKillInstinct();
+		break;*/
+		case 8:
+		break;
+		}
+		}
+	
+	if ((decision==1)||(decision==2)||(decision==3)) {
+		
+		if (!this.doActionWithNumber(wish[0].getNumberOfAnimalNeed())) {
+			if (!this.doActionWithNumber(wish[1].getNumberOfAnimalNeed())) {
+				this.doActionWithNumber(wish[2].getNumberOfAnimalNeed());   //здесь можно оставить последнее действие без проверок каких-либо,
+				this.previousAction=(char) wish[2].getNumberOfAnimalNeed();
+			} else 
+				this.previousAction=(char) wish[1].getNumberOfAnimalNeed();        //потому что всегда если животное дошло до последнего действия, то оно- сон. (всегда возвращает true)
+		}
+		
+		
+		
+		
+	}
+	
+	
+	
+	//if (decision==1) {/*System.out.println("Hungry "+this.starvation+" "+this.exhaustion+" "+this.passion);*/ this./*feelHungry();*/goToNearestGrass();}
+	//if (decision==2) {/*System.out.println("Passion "+this.starvation+" "+this.exhaustion+" "+this.passion);*/ if (this.feelPassion(this.badFemale)==-1) {}}
+	//if (decision==4) {this.feelKillInstinct();}
+	//if (decision==3) {/*System.out.println("Sleep "+this.starvation+" "+this.exhaustion+" "+this.passion);*/ this.feelSleepy();}
+	
+	
 	
 	return true;
 }
@@ -505,9 +545,9 @@ public void hasThread() {
 private boolean RunAwayFromPredator()
 {
 	//Скорость бегства
-	int speed = 5;
+	int speed = 3;
 	//Дистанция опасности.
-	int DangerDistance = 5;
+	int DangerDistance = 50;
 	
 	DangerDistance = DangerDistance*DangerDistance;
 	int min = DangerDistance + 1;

@@ -72,20 +72,20 @@ public class Information {                //этот класс занимается считыванием вс
 		
 		linkedListOfLeos.clear();
 		Random rand = new Random();
-		System.out.println(defaultHeight);
+		//System.out.println(defaultHeight);
 		for (int i=1;i<=amountPredator;i++) {
 			linkedListOfLeos.add(new Leo(rand.nextBoolean(), 
 					rand.nextInt(defaultWeight), 
 					rand.nextInt(defaultHeight), 
 						100+rand.nextInt(400), 
 							100, 100, 100,    
-							(float)(0.1+rand.nextInt(3)/5),
-							(float)rand.nextInt(7)/10,
-							1+rand.nextInt(3),
-			(float)(0.1+rand.nextInt(3)/5),
-			(float)rand.nextInt(7)/10,
-			1+rand.nextInt(3))
-			);
+							(float)        (     rand.nextFloat()*0.4+0.1    ),
+							(float)        (     rand.nextFloat()*0.2+0.1    ),
+							(float)        (     rand.nextFloat()*0.1+0.2    ),
+			(float)        (     rand.nextFloat()*0.4+0.1    ),
+			(float)        (     rand.nextFloat()*0.2+0.1    ),
+			(float)        (     rand.nextFloat()*0.2+0.1    )
+			));
 		}
 		
 		
@@ -121,20 +121,20 @@ public class Information {                //этот класс занимается считыванием вс
 		linkedListOfHerbivores.add(new Herbivore(false, 300, 200,  400, 100, 90,  50,     (float)1,(float)0.5,3,   1,(float)0.1,1));*/
 	linkedListOfHerbivores.clear();
 		Random rand = new Random();
-		System.out.println(defaultHeight);
+		//System.out.println(defaultHeight);
 		for (int i=1;i<=amountHerbivore;i++) {
 			linkedListOfHerbivores.add(new Herbivore(rand.nextBoolean(), 
 					rand.nextInt(defaultWeight), 
 					rand.nextInt(defaultHeight), 
-						rand.nextInt(500), 
+						100+rand.nextInt(400), 
 							100, 100, 100,    
-							(float)(0.1+rand.nextInt(3)/5),
-							(float)rand.nextInt(7)/10,
-							1+rand.nextInt(3),
-			(float)(0.1+rand.nextInt(3)/5),
-			(float)rand.nextInt(7)/10,
-			1+rand.nextInt(3))
-			);
+							(float)        (     rand.nextFloat()*0.4+0.1    ),
+							(float)        (     rand.nextFloat()*0.2+0.1    ),
+							(float)        (     rand.nextFloat()*0.1+0.2    ),
+			(float)        (     rand.nextFloat()*0.4+0.1    ),
+			(float)        (     rand.nextFloat()*0.2+0.1    ),
+			(float)        (     rand.nextFloat()*0.2+0.1    )
+			));
 		}
 	
 	
@@ -154,7 +154,7 @@ public class Information {                //этот класс занимается считыванием вс
 		linkedListOfGrass.add(new Grass(300,100,100));*/
 		linkedListOfGrass.clear();
 		Random rand = new Random();
-		System.out.println(defaultHeight);
+		//System.out.println(defaultHeight);
 		for (int i=1;i<=amountGrass;i++) {
 			linkedListOfGrass.add(new Grass(rand.nextInt(defaultWeight),rand.nextInt(defaultHeight), rand.nextInt(500)));
 		}
@@ -173,8 +173,8 @@ public class Information {                //этот класс занимается считыванием вс
 	    	   imageSleepingLeoFemale=ImageIO.read(new File("Textures/SleepingLeoFemale.png"));
 	    	   
 	    	   //для травы и земли
-	    	   imageGreenGrass=ImageIO.read(new File("Textures/GreenGrass.jpg"));
-	    	   imageYellowGrass=ImageIO.read(new File("Textures/YellowGrass.jpg"));
+	    	   imageGreenGrass=ImageIO.read(new File("Textures/GreenGrass.png"));
+	    	   imageYellowGrass=ImageIO.read(new File("Textures/YellowGrass.png"));
 	    	   imageUsualGround=ImageIO.read(new File("Textures/UsualGround.jpg"));
 	    	   
 	    	   //Для травоядных
@@ -234,16 +234,16 @@ public class Information {                //этот класс занимается считыванием вс
 		    						new Leo( rand.nextBoolean(),
 		    								currentAnimal.getXPosition(),
 		    								currentAnimal.getYPosition(),
-		    								60+rand.nextInt(41),
+		    								100+rand.nextInt(400),
 		    								100,
 		    								100,
 		    								100,
-		    								(currentAnimal.getLegacyStarvationCoefficient()+currentAnimal.getFromWhom().getLegacyStarvationCoefficient())/2-2+rand.nextInt(5),
-		    								(currentAnimal.getLegacyPassionCoefficient()+currentAnimal.getFromWhom().getLegacyPassionCoefficient())/2-(float)0.3+(float)rand.nextInt(7)/10,
-		    								(currentAnimal.getLegacyExhaustionCoefficient()+currentAnimal.getFromWhom().getLegacyExhaustionCoefficient())/2-2+rand.nextInt(5),
-		    								1+rand.nextInt(3),
-		    								-(float)0.3+(float)rand.nextInt(7)/10,
-		    								1+rand.nextInt(3)
+		    								(float)((currentAnimal.getLegacyStarvationCoefficient()+currentAnimal.getFromWhom().getLegacyStarvationCoefficient())/2),
+		    								(float)((currentAnimal.getLegacyPassionCoefficient()+currentAnimal.getFromWhom().getLegacyPassionCoefficient())/2),
+		    								(float)((currentAnimal.getLegacyExhaustionCoefficient()+currentAnimal.getFromWhom().getLegacyExhaustionCoefficient())/2),
+		    				(float)        (     rand.nextFloat()*0.4+0.1    ),
+		    				(float)        (     rand.nextFloat()*0.2+0.1    ),
+		    				(float)        (     rand.nextFloat()*0.2+0.1    )
 		    						));
 		    
 		    currentAnimal.setTimeOfPregnant(-1);
@@ -373,12 +373,12 @@ public static void checkIsHerbivoreBorn() {
 	    								100,
 	    								100,
 	    								100,
-	    								(currentAnimal.getLegacyStarvationCoefficient()+currentAnimal.getFromWhom().getLegacyStarvationCoefficient())/2-2+rand.nextInt(5),
-	    								(currentAnimal.getLegacyPassionCoefficient()+currentAnimal.getFromWhom().getLegacyPassionCoefficient())/2-(float)0.3+(float)rand.nextInt(7)/10,
-	    								(currentAnimal.getLegacyExhaustionCoefficient()+currentAnimal.getFromWhom().getLegacyExhaustionCoefficient())/2-2+rand.nextInt(5),
-	    								1+rand.nextInt(3),
-	    								-(float)0.3+(float)rand.nextInt(7)/10,
-	    								1+rand.nextInt(3)
+	    								(float)((currentAnimal.getLegacyStarvationCoefficient()+currentAnimal.getFromWhom().getLegacyStarvationCoefficient())/2),
+	    								(float)((currentAnimal.getLegacyPassionCoefficient()+currentAnimal.getFromWhom().getLegacyPassionCoefficient())/2),
+	    								(float)((currentAnimal.getLegacyExhaustionCoefficient()+currentAnimal.getFromWhom().getLegacyExhaustionCoefficient())/2),
+	    				(float)        (     rand.nextFloat()*0.4+0.1    ),
+	    				(float)        (     rand.nextFloat()*0.2+0.1    ),
+	    				(float)        (     rand.nextFloat()*0.2+0.1    )
 	    						));
 	    
 	    currentAnimal.setTimeOfPregnant(-1);

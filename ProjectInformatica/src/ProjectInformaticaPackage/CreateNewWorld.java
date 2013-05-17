@@ -119,7 +119,7 @@ class WriteTextAction implements MouseListener {
 		
 	}
 	public void mouseEntered(MouseEvent e) {
-		System.out.println("tbtdb\n\n\n\n\n\n\n\\n\n\n\n");
+		//System.out.println("tbtdb\n\n\n\n\n\n\n\\n\n\n\n");
 	}
 	public void mouseExited(MouseEvent e) {
 		

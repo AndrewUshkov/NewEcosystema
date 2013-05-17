@@ -143,7 +143,7 @@ class PauseAction implements ActionListener {
 }
 class CreateAction implements ActionListener {
 	public void actionPerformed(ActionEvent event) {
-		System.out.println("fvdx");
+		//System.out.println("fvdx");
 		JFrame test=new CreateNewWorld();
 		test.setVisible(true);
 		

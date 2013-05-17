@@ -28,11 +28,11 @@ private float exhaustionCoefficient;
 private float legacyStarvationCoefficient;
 private float legacyPassionCoefficient;
 private float legacyExhaustionCoefficient;
-private float decision;
+private int decision;
 private int timeOfPregnant=-1;
 private boolean wantToBorn=false;
 private Leo fromWhom=null;
-//ArrayList <LeoWish> leoNeeds;
+public AnimalWish wish[]= {new AnimalWish(0,0), new AnimalWish(0,0), new AnimalWish(0,0)}; 
 private boolean isChild=true;
 private char previousAction=0;
 private Leo badFemale=null;                                        //самка, несогласная на спаривание
@@ -136,10 +136,10 @@ public void setPassionCoefficient(float newPCoef) {
 	this.passionCoefficient=newPCoef;
 }
 public float getLegacyStarvationCoefficient() {
-	return this.starvationCoefficient;
+	return this.legacyStarvationCoefficient;
 }
 public void setLegacyStarvationCoefficient(float newLSCoef) {
-	this.starvationCoefficient=newLSCoef;
+	this.legacyStarvationCoefficient=newLSCoef;
 }
 public float getLegacyPassionCoefficient() {
 	return this.legacyPassionCoefficient;
@@ -242,7 +242,7 @@ public void setTimeOfPregnant(int time) {
 public Leo getFromWhom() {
 	return this.fromWhom;
 }
-private void feelHungry() {
+private boolean feelHungry() {
 	if (!Information.getLinkedListOfHerbivores().isEmpty()) {
 		Herbivore nearestHerbivore=Information.getLinkedListOfHerbivores().getFirst();
 		int nearestDistance=(nearestHerbivore.getXPosition()-this.xPosition)*(nearestHerbivore.getXPosition()-this.xPosition)+(nearestHerbivore.getYPosition()-this.yPosition)*(nearestHerbivore.getYPosition()-this.yPosition);
@@ -265,7 +265,8 @@ private void feelHungry() {
 				this.eatHerbivore(nearestHerbivore);
 			}
 	
-	}
+		return true;
+	} else { return false;}
 	
 }
 private void eatHerbivore(Herbivore victim) {
@@ -293,14 +294,18 @@ private void tryMakeChildren(Leo female) {
 				female.becomePregnant();
 				System.out.println("Pregnant");
 				} else {
+					if (female.previousAction!=3) {
 					this.badFemale=female;
+					this.timeOfInertion=0;
+					}
 				}
 				
 	
 }
-private int feelPassion(Leo badFemale) {
+private boolean feelPassion(Leo badFemale) {
 if (this.isMale()) {
-	if (!Information.getLinkedListOfLeos().isEmpty()) {
+	int numberFemaleChildren=0;
+	if (Information.getLinkedListOfLeos().size()>1) {
 		//LifeForm nearestLeo=Information.getLinkedListOfLifeForms().getFirst();
 		Leo nearestLeo=null;
 		Leo currentLeo;
@@ -308,32 +313,36 @@ if (this.isMale()) {
 		int nearestDistance=-1;
 		for (Iterator<Leo> current = Information.getLinkedListOfLeos().iterator(); current.hasNext(); ) {
 			currentLeo=current.next();
+			if ((currentLeo.isChild())&&(!currentLeo.isMale())) {numberFemaleChildren++;}   //смотрим, есть ли "несовершеннолетние" львицы
 			if (    (nearestLeo==null)&&( ((!currentLeo.isMale()))          )&&(!currentLeo.isChild())
 					&& (currentLeo.timeOfPregnant==-1)
-								&& (!currentLeo.equals(badFemale))
+								&& (currentLeo!=badFemale)
 					) 
 			{
 				nearestLeo=currentLeo; 
 				nearestDistance=(nearestLeo.getXPosition()-this.xPosition)*(nearestLeo.getXPosition()-this.xPosition)+(nearestLeo.getYPosition()-this.yPosition)*(nearestLeo.getYPosition()-this.yPosition);
 					}
 			if ((nearestLeo!=null)&&(nearestLeo!=currentLeo)  &&
-					    ((!currentLeo.isMale()))&&(!currentLeo.isChild())&& (currentLeo.timeOfPregnant==-1)         ) {
+					    (!currentLeo.isMale())&&(!currentLeo.isChild())&& (currentLeo.timeOfPregnant==-1) && (currentLeo!=badFemale)         ) {
 				currentDistance=(currentLeo.getXPosition()-this.xPosition)*(currentLeo.getXPosition()-this.xPosition)+(currentLeo.getYPosition()-this.yPosition)*(currentLeo.getYPosition()-this.yPosition);
 				if (currentDistance<nearestDistance) {nearestDistance=currentDistance; nearestLeo=currentLeo;}
 				
 			}
 			
 		}
-		if (nearestLeo==null) {return -1;}
-		if (nearestLeo.getXPosition()>=this.xPosition) {this.xPosition+=4;} else this.xPosition-=4;
-		if (nearestLeo.getYPosition()>=this.yPosition) {this.yPosition+=4;} else this.yPosition-=4;
-		if (this.xPosition>=Information.getDefaultWeight()) {this.xPosition-=Information.getDefaultWeight();}
-		if (this.xPosition<=0) {this.xPosition+=Information.getDefaultWeight();}
-		if (this.yPosition>=Information.getDefaultHeight()) {this.yPosition-=Information.getDefaultHeight();}
-		if (this.yPosition<=0) {this.yPosition+=Information.getDefaultHeight();}
-		if (      (nearestDistance<=Information.getSizeOfCell())&&
+		if ((nearestLeo==null)&&(numberFemaleChildren==0)) {this.timeOfInertion=0; return false;} else {
+			if (nearestLeo!=null) {
+			if (nearestLeo.getXPosition()>=this.xPosition) {this.xPosition+=4;} else this.xPosition-=4;
+			if (nearestLeo.getYPosition()>=this.yPosition) {this.yPosition+=4;} else this.yPosition-=4;
+			if (this.xPosition>=Information.getDefaultWeight()) {this.xPosition-=Information.getDefaultWeight();}
+			if (this.xPosition<=0) {this.xPosition+=Information.getDefaultWeight();}
+			if (this.yPosition>=Information.getDefaultHeight()) {this.yPosition-=Information.getDefaultHeight();}
+			if (this.yPosition<=0) {this.yPosition+=Information.getDefaultHeight();}
+			if (      (nearestDistance<=Information.getSizeOfCell())&&
 									(this.isMale())		) {this.tryMakeChildren(nearestLeo);}
-		return 0;
+			return true;
+			}	return true;
+			}
 		//int nearestDistance=(nearestLeo.getXPosition()-this.xPosition)*(nearestLeo.getXPosition()-this.xPosition)+(nearestLeo.getYPosition()-this.yPosition)*(nearestLeo.getYPosition()-this.yPosition);
 		
 		/*Leo newCurrentLeo;
@@ -349,8 +358,8 @@ if (this.isMale()) {
 		if (nearestLeo.getYPosition()>=this.yPosition) {this.yPosition+=4;} else this.yPosition-=4;
 		//if (nearestDistance<=Information.getSizeOfCell()) {this.starvation+=nearestGrass.getEnergyValue();}
 		}*/
-		} else return -1;
-} else return 0;
+		} else return false;
+} else return false;
 }
 
 private void bornNewLeo() {
@@ -362,10 +371,11 @@ private void bornNewLeo() {
 private void feelKillInstinct() {
 	
 }
-private void feelSleepy() {
+private boolean feelSleepy() {
 	if (this.exhaustion<2*this.exhaustionCoefficient) {
 	this.exhaustion+=2*this.exhaustionCoefficient;
 	} else this.exhaustion=100;
+	return true;
 }
 private int getDecision() {        // здесь происходит сравнивание всех шкал и определение, что делать дальше
 	if (this.timeOfInertion==0) {
@@ -386,10 +396,27 @@ private int getDecision() {        // здесь происходит сравнивание всех шкал и о
 	if (this.exhaustion<=0) return 3;
 	
 	if (this.timeOfPregnant==0) {return 5;}
-	if ((this.starvation<=this.exhaustion)&&(this.starvation<=this.passion)) {this.previousAction=1; this.timeOfInertion=10; return 1;}
+	
+	if (this.starvation>60) {
+		this.wish[0]=new AnimalWish(1,100);
+	} else this.wish[0]=new AnimalWish(1,this.starvation);
+	    
+	this.wish[1]=new AnimalWish(2,this.passion);
+	this.wish[2]=new AnimalWish(3,this.exhaustion);
+	
+	Arrays.sort(wish);        //сортируем желания  льва по степени важности
+	this.previousAction=(char)wish[0].getNumberOfAnimalNeed();
+	
+	if (wish[0].getNumberOfAnimalNeed()==1) this.timeOfInertion=10;
+	if (wish[0].getNumberOfAnimalNeed()==2) this.timeOfInertion=5;
+	if (wish[0].getNumberOfAnimalNeed()==3) this.timeOfInertion=20;
+	return wish[0].getNumberOfAnimalNeed();
+	
+	/*if ((this.starvation<=this.exhaustion)&&(this.starvation<=this.passion)) {this.previousAction=1; this.timeOfInertion=10; return 1;}
 	if ((this.starvation>=this.passion)&&(this.passion<=this.exhaustion)) {this.previousAction=2; this.timeOfInertion=5; return 2;}
 	if ((this.starvation>=this.exhaustion)&&(this.exhaustion<=this.passion)) {this.previousAction=3; this.timeOfInertion=20; return 3;}
-	return 3;
+	
+	return 3;*/
 	} else {
 			this.timeOfInertion--;  //время инерции- это чтобы например львы спали не до того как другая шкала станет меньше шкалы exhaustion, а хотя бы спали некоторое минимальное число ходов
 			if (!this.isChild) {
@@ -417,15 +444,22 @@ private int getDecision() {        // здесь происходит сравнивание всех шкал и о
 	/*int length=this.leoNeeds.length;
 	Arrays.sort(this.leoNeeds);*/
 	
-	/*ArrayList<LeoWish> leoNeeds= new  ArrayList<LeoWish>();
-		leoNeeds.add(new LeoWish(1,this.starvation));
-		leoNeeds.add(new LeoWish(2,this.passion));
-		leoNeeds.add(new LeoWish(3,this.exhaustion));
+	/*ArrayList<AnimalWish> leoNeeds= new  ArrayList<AnimalWish>();
+		leoNeeds.add(new AnimalWish(1,this.starvation));
+		leoNeeds.add(new AnimalWish(2,this.passion));
+		leoNeeds.add(new AnimalWish(3,this.exhaustion));
 	
 		
 	Collections.sort(leoNeeds);
-	return leoNeeds.get(leoNeeds.size()-1).getNumberOfLeoNeed();*/
+	return leoNeeds.get(leoNeeds.size()-1).getNumberOfAnimalNeed();*/
 	
+}
+
+private boolean doActionWithNumber(int number) {
+	if (number==1) return this.feelHungry();
+	if (number==2) return this.feelPassion(this.badFemale);
+	if (number==3) return this.feelSleepy();
+	return false;
 }
 
 public void setWantToBorn(boolean a) {
@@ -434,33 +468,78 @@ public void setWantToBorn(boolean a) {
 public boolean makeDecision() {
 	decision=this.getDecision();
 	if (decision==0) {return false;}
-	if (decision==1) {System.out.println("Hungry "+this.starvation+" "+this.exhaustion+" "+this.passion); this.feelHungry();/*goToNearestGrass();*/}
-	if (decision==2) {System.out.println("Passion "+this.starvation+" "+this.exhaustion+" "+this.passion); if (this.feelPassion(this.badFemale)==-1) {}}
 	if (decision==4) {this.feelKillInstinct();}
-	if (decision==3) {System.out.println("Sleep "+this.starvation+" "+this.exhaustion+" "+this.passion); this.feelSleepy();}
-	if (decision==5) {System.out.println("Want to born"); this.bornNewLeo();}
+	if (decision==5) {/*System.out.println("Want to born");*/ this.bornNewLeo();}
 	if (decision==6) {
-			System.out.println("Previous action"); 
-			switch (this.previousAction) {
-			case 0:
-				System.out.println("Childhood");
-			break;
-			case 1:
-				System.out.println("Hungry "+this.starvation+" "+this.exhaustion+" "+this.passion); this.feelHungry();/*goToNearestGrass();*/
-			break;
-			case 2:
-				System.out.println("Passion "+this.starvation+" "+this.exhaustion+" "+this.passion); if (this.feelPassion(this.badFemale)==-1) {}
-			break;
-			case 3:
-				System.out.println("Sleep "+this.starvation+" "+this.exhaustion+" "+this.passion); this.feelSleepy();
-			break;
-			case 4:
-				this.feelKillInstinct();
-			break;
-			case 7:
-			break;
+		/*System.out.println("Previous action"); */
+		switch (this.previousAction) {
+		case 0:
+			/*System.out.println("Childhood");*/
+		break;
+		case 1:
+			/*System.out.println("Hungry "+this.starvation+" "+this.exhaustion+" "+this.passion);*/ this.feelHungry();/*goToNearestGrass();*/
+		break;
+		case 2:
+			/*System.out.println("Passion "+this.starvation+" "+this.exhaustion+" "+this.passion);*/ this.feelPassion(this.badFemale);
+		break;
+		case 3:
+			/*System.out.println("Sleep "+this.starvation+" "+this.exhaustion+" "+this.passion);*/ this.feelSleepy();
+		break;
+		case 4:
+			this.feelKillInstinct();
+		break;
+		case 7:
+		break;
+		}
+		}
+	/*if (!this.doActionWithNumber(this.wish[0].getNumberOfAnimalNeed())) {
+		if (!this.doActionWithNumber(this.wish[1].getNumberOfAnimalNeed())) {
+			this.doActionWithNumber(this.wish[2].getNumberOfAnimalNeed());
+		}
+			
+	}*/
+	if ((decision==1)||(decision==2)||(decision==3)) {
+		
+		if (!this.doActionWithNumber(wish[0].getNumberOfAnimalNeed())) {
+			if (!this.doActionWithNumber(wish[1].getNumberOfAnimalNeed())) {
+				this.doActionWithNumber(wish[2].getNumberOfAnimalNeed());   //здесь можно оставить последнее действие без проверок каких-либо,
+				this.previousAction=(char) wish[2].getNumberOfAnimalNeed();
+			} else 
+				this.previousAction=(char) wish[1].getNumberOfAnimalNeed();        //потому что всегда если животное дошло до последнего действия, то оно- сон. (всегда возвращает true)
+		}
+		
+		
+		
+		
+	}
+	/*
+	if (decision==1) {
+		/*System.out.println("Hungry "+this.starvation+" "+this.exhaustion+" "+this.passion);*/
+		/*if (!this.doActionWithNumber(wish[0].getNumberOfAnimalNeed())) {
+			if (!this.doActionWithNumber(wish[1].getNumberOfAnimalNeed())) {
+				if (!this.doActionWithNumber(wish[2].getNumberOfAnimalNeed()));
 			}
+		}
+		
+		}
+	if (decision==2) {/*System.out.println("Passion "+this.starvation+" "+this.exhaustion+" "+this.passion);*/ 
+		/*if (!this.doActionWithNumber(wish[0].getNumberOfAnimalNeed())) {
+			if (!this.doActionWithNumber(wish[1].getNumberOfAnimalNeed())) {
+				if (!this.doActionWithNumber(wish[2].getNumberOfAnimalNeed()));
 			}
+		
+	}
+		}
+	if (decision==3) {/*System.out.println("Sleep "+this.starvation+" "+this.exhaustion+" "+this.passion);*/ 
+		/*if (!this.doActionWithNumber(wish[0].getNumberOfAnimalNeed())) {
+			if (!this.doActionWithNumber(wish[1].getNumberOfAnimalNeed())) {
+				if (!this.doActionWithNumber(wish[2].getNumberOfAnimalNeed()));
+			}
+		
+	}
+			}*/
+	
+	
 	
 	return true;
 }
