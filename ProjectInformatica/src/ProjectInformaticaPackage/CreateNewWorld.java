@@ -71,7 +71,7 @@ public class CreateNewWorld extends JFrame {
 			//первоначальные значения
 			numberPredators.setText("5");
 			numberHerbivores.setText("5");
-			numberGrass.setText("8");
+			numberGrass.setText("70");
 			
 			CreationAction creationNewWorld=new CreationAction(this);
 			enter.addActionListener(creationNewWorld);

@@ -125,7 +125,7 @@ import javax.swing.*;
 						    if ((image=val.getAnimalImage())==null) return;
 						    
 						    
-						    if (val.isChild()) {
+						    if ((val.isChild())&&(val.isAlive())) {
 						    
 						    		g.drawImage(image,    //вот здесь с помощью getAnimalImage можно в зависимости от состояния объекта (гапример, он спит) ставить разные картинки
 						    				val.getXPosition(), 

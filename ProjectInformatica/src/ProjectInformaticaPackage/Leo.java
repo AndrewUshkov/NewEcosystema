@@ -397,7 +397,7 @@ private int getDecision() {        // здесь происходит сравнивание всех шкал и о
 	
 	if (this.timeOfPregnant==0) {return 5;}
 	
-	if (this.starvation>60) {
+	if (this.starvation>70) {
 		this.wish[0]=new AnimalWish(1,100);
 	} else this.wish[0]=new AnimalWish(1,this.starvation);
 	    

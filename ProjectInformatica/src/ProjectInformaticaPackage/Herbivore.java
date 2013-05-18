@@ -479,7 +479,7 @@ public void setWantToBorn(boolean a) {
 }
 public boolean makeDecision() {
 	decision=this.getDecision();
-	if (decision==7) {this.previousAction=7;}
+	if (decision==7) {this.previousAction=7; this.timeOfInertion=0;}
 	if (decision==0) {return false;}
 	if (decision==5) {/*System.out.println("Want to born");*/ this.bornNewHerbivore();}
 	if ((decision==6)&&(this.isAlive)) {
@@ -547,7 +547,7 @@ private boolean RunAwayFromPredator()
 	//Скорость бегства
 	int speed = 3;
 	//Дистанция опасности.
-	int DangerDistance = 50;
+	int DangerDistance = 100;
 	
 	DangerDistance = DangerDistance*DangerDistance;
 	int min = DangerDistance + 1;
@@ -621,7 +621,7 @@ private boolean RunAwayFromPredator()
 //После какого шага львы будут дальше всего
 	for (int i=0; i<=7; i++)
 	{
-		min = 800;
+		min = 20000;
 		for (Iterator<Leo> current = Information.getLinkedListOfLeos().iterator(); current.hasNext(); ) 
 		{
 		    currentLeo = current.next();
