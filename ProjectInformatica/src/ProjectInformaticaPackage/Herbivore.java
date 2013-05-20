@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
 
 public class Herbivore implements LifeForm {
 private boolean male;
-private float age;
+private float age; 
 private float passion;
 private float starvation;
 private float exhaustion;
@@ -36,7 +36,7 @@ private Herbivore fromWhom=null;
 //ArrayList <HerbivoreWish> HerbivoreNeeds;
 private boolean isChild=true;
 private char previousAction=0;
-private Herbivore badFemale=null;                                        //самка, несогласная на спаривание
+private Herbivore badFemale=null;                                        //пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 public int timeOfInertion= this.isChild ? 30:0;
 public AnimalWish wish[]= {new AnimalWish(0,0), new AnimalWish(0,0), new AnimalWish(0,0)};
 private boolean hasNoThread=true;
@@ -302,7 +302,7 @@ if (this.isMale()) {
 		int nearestDistance=-1;
 		for (Iterator<Herbivore> current = Information.getLinkedListOfHerbivores().iterator(); current.hasNext(); ) {
 			currentHerbivore=current.next();
-			if ((currentHerbivore.isChild())&&(!currentHerbivore.isMale())) {numberFemaleChildren++;}   //смотрим, есть ли "несовершеннолетние" травоядные самки
+			if ((currentHerbivore.isChild())&&(!currentHerbivore.isMale())) {numberFemaleChildren++;}   //пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅ "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ" пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 			if (    (nearestHerbivore==null)&&( ((!currentHerbivore.isMale()))          )&&(!currentHerbivore.isChild())
 					&& (currentHerbivore.timeOfPregnant==-1)
 								&& (!currentHerbivore.equals(badFemale))
@@ -337,7 +337,53 @@ if (this.isMale()) {
 			}	return true;
 		}
 	} else return false;
-} else return false;
+} else
+{
+	int numberFemaleChildren=0;
+	if (Information.getLinkedListOfHerbivores().size()>1) {
+		//LifeForm nearestHerbivore=Information.getLinkedListOfLifeForms().getFirst();
+		Herbivore nearestHerbivore=null;
+		Herbivore currentHerbivore;
+		int currentDistance=-1;
+		int nearestDistance=-1;
+		for (Iterator<Herbivore> current = Information.getLinkedListOfHerbivores().iterator(); current.hasNext(); ) {
+			currentHerbivore=current.next();
+			if ((currentHerbivore.isChild())&&(currentHerbivore.isMale())) {numberFemaleChildren++;}   //пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅ "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ" пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+			if (    (nearestHerbivore==null)&&( ((currentHerbivore.isMale()))          )&&(!currentHerbivore.isChild())
+					&& (currentHerbivore.timeOfPregnant==-1)
+								&& (!currentHerbivore.equals(badFemale))
+					) 
+			{
+				nearestHerbivore=currentHerbivore; 
+				nearestDistance=(nearestHerbivore.getXPosition()-this.xPosition)*(nearestHerbivore.getXPosition()-this.xPosition)+(nearestHerbivore.getYPosition()-this.yPosition)*(nearestHerbivore.getYPosition()-this.yPosition);
+					}
+			if ((nearestHerbivore!=null)&&(nearestHerbivore!=currentHerbivore)  &&
+					    (currentHerbivore.isMale())&&(!currentHerbivore.isChild())&& (currentHerbivore.timeOfPregnant==-1) && (!currentHerbivore.equals(badFemale))         ) {
+				currentDistance=(currentHerbivore.getXPosition()-this.xPosition)*(currentHerbivore.getXPosition()-this.xPosition)+(currentHerbivore.getYPosition()-this.yPosition)*(currentHerbivore.getYPosition()-this.yPosition);
+				if (currentDistance<nearestDistance) {nearestDistance=currentDistance; nearestHerbivore=currentHerbivore;}
+				
+			}
+			
+		}
+		
+		
+		
+		if ((nearestHerbivore==null)&&(numberFemaleChildren==0)) {this.timeOfInertion=0; return false;} else {
+			if (nearestHerbivore!=null) {
+			if (nearestHerbivore.getXPosition()>=this.xPosition) {this.xPosition+=4;} else this.xPosition-=4;
+			if (nearestHerbivore.getYPosition()>=this.yPosition) {this.yPosition+=4;} else this.yPosition-=4;
+			if (this.xPosition>=Information.getDefaultWeight()) {this.xPosition-=Information.getDefaultWeight();}
+			if (this.xPosition<=0) {this.xPosition+=Information.getDefaultWeight();}
+			if (this.yPosition>=Information.getDefaultHeight()) {this.yPosition-=Information.getDefaultHeight();}
+			if (this.yPosition<=0) {this.yPosition+=Information.getDefaultHeight();}
+			if (      (nearestDistance<=Information.getSizeOfCell())&&
+									(!this.isMale())		) {this.tryMakeChildren(nearestHerbivore);}
+			return true;
+			
+			}	return true;
+		}
+	} else return false;
+}
 }
 
 private void bornNewHerbivore() {
@@ -346,7 +392,7 @@ private void bornNewHerbivore() {
 	this.starvation-=10;
 	this.wantToBorn=true;
 }
-/*private void feelKillInstinct() {     // Травоядные не убивают сородичей
+/*private void feelKillInstinct() {     // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	
 }*/
 public boolean isAlive() {
@@ -369,7 +415,7 @@ private boolean feelSleepy() {
 private int getDecision() {
 	
 	if (this.RunAwayFromPredator()) {
-		this.age-=0.5;                                              //установка новых значений полей
+		this.age-=0.5;                                              //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 		this.starvation-=this.starvationCoefficient;
 		
 		if (passion>20) {this.passion-=this.passionCoefficient;}
@@ -392,7 +438,7 @@ private int getDecision() {
 	if (this.timeOfInertion==0) {
 			if (!this.isAlive) return 0;
 			if (this.isChild) this.isChild=false;
-			this.age-=0.5;                                              //установка новых значений полей
+			this.age-=0.5;                                              //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 			this.starvation-=this.starvationCoefficient;
 			
 			if (passion>20) {this.passion-=this.passionCoefficient;}
@@ -415,7 +461,7 @@ private int getDecision() {
 	this.wish[1]=new AnimalWish(2,this.passion);
 	this.wish[2]=new AnimalWish(3,this.exhaustion);
 	
-	Arrays.sort(wish);        //сортируем желания травоядного по степени важности
+	Arrays.sort(wish);        //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	this.previousAction=(char)wish[0].getNumberOfAnimalNeed();
 	
 	if (wish[0].getNumberOfAnimalNeed()==1) this.timeOfInertion=10;
@@ -431,7 +477,7 @@ private int getDecision() {
 	} else {
 			this.timeOfInertion--;
 			if ((!this.isChild)&&(this.isAlive)) {
-					this.age-=0.5;                                              //установка новых значений полей
+					this.age-=0.5;                                              //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 					this.starvation-=this.starvationCoefficient;
 					
 					if (passion>20) {this.passion-=this.passionCoefficient;}  
@@ -509,10 +555,10 @@ public boolean makeDecision() {
 		
 		if (!this.doActionWithNumber(wish[0].getNumberOfAnimalNeed())) {
 			if (!this.doActionWithNumber(wish[1].getNumberOfAnimalNeed())) {
-				this.doActionWithNumber(wish[2].getNumberOfAnimalNeed());   //здесь можно оставить последнее действие без проверок каких-либо,
+				this.doActionWithNumber(wish[2].getNumberOfAnimalNeed());   //пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅ,
 				this.previousAction=(char) wish[2].getNumberOfAnimalNeed();
 			} else 
-				this.previousAction=(char) wish[1].getNumberOfAnimalNeed();        //потому что всегда если животное дошло до последнего действия, то оно- сон. (всегда возвращает true)
+				this.previousAction=(char) wish[1].getNumberOfAnimalNeed();        //пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅ- пїЅпїЅпїЅ. (пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ true)
 		}
 		
 		
@@ -538,15 +584,15 @@ public void hasThread() {
 	this.hasNoThread=false;
 }
 
-/*Осуществляется проверка каждый раз, когда принимается решение.
- * Если рядом есть хищники, травоядный убегает от них.
- * Метод возвращает true если нужно убегать и false если не нужно.
+/*пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+ * пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ.
+ * пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ true пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ false пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.
  */
 private boolean RunAwayFromPredator()
 {
-	//Скорость бегства
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	int speed = 3;
-	//Дистанция опасности.
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 	int DangerDistance = 100;
 	
 	DangerDistance = DangerDistance*DangerDistance;
@@ -555,18 +601,18 @@ private boolean RunAwayFromPredator()
 	Leo currentLeo; 
 	
 
-	//Мертвые не убегают.
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 	if (!this.isAlive) 
 	{
 		return false;
 	}
-	//Дети не убегают
+	//пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	if (this.isChild) 
 	{
 		return false;
 	}
 	
-	//Расстояние до ближайшего хищника
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	for (Iterator<Leo> current = Information.getLinkedListOfLeos().iterator(); current.hasNext(); ) 
 	{
 	    currentLeo = current.next();
@@ -577,15 +623,15 @@ private boolean RunAwayFromPredator()
 	    }
 	}
 	
-	//Если хищники далеко, нужно жить обычной жизнью.
+	//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.
 	if(min>DangerDistance)
 	{
 		return false;
 	}
 	
-	//Если хищники близко, решаем, куда бежать.
+	//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.
 	
-	//Варианты отступления по 8 направлениям. Speed - скорость бегства
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ 8 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. Speed - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	int speed45 = (int)Math.floor(((double)speed)/1.41);
 	
 	int[][] way = new int[8][2];
@@ -618,7 +664,7 @@ private boolean RunAwayFromPredator()
 	int max = -1; 
 	
 	
-//После какого шага львы будут дальше всего
+//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	for (int i=0; i<=7; i++)
 	{
 		min = 20000;
@@ -639,7 +685,7 @@ private boolean RunAwayFromPredator()
 		}
 	}
 	
-	//Такой шаг и делаем
+	//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	this.setXPosition(this.xPosition + way[bestdir][0]);
 	this.setYPosition(this.yPosition + way[bestdir][1]);
 	return true;
