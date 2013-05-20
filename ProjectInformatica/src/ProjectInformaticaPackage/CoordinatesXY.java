@@ -1,6 +1,6 @@
 package ProjectInformaticaPackage;
 
-public class CoordinatesXY {                  //����� ��� �������� ���������. �� ����, ������� ��� ���.
+public class CoordinatesXY {                  
 	private int xCoord;
 	private int yCoord;
 	

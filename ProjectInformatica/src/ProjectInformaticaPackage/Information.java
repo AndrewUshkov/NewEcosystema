@@ -23,13 +23,19 @@ public class Information {                //этот класс занимается считыванием вс
 	private static LinkedList<Leo> linkedListOfBornedLeos=new LinkedList<Leo>();
 	private static LinkedList<Herbivore> linkedListOfBornedHerbivores=new LinkedList<Herbivore>();
 	private static LinkedList<Herbivore> linkedListOfHerbivores=new LinkedList<Herbivore>();
+	private static LinkedList<Grass> linkedListOfBornedGrass=new LinkedList<Grass>();
 	private static int sizeOfCell;   //размер картинок, отображаемых на экране
 	private static int defaultWeight=10;     //это два размера главного окга программы
 	private static int defaultHeight=10;
 	private static int quantTime=100;
 	public static boolean letGo=false;          //нужна для синхронизации процессов
-	private static Image imageGreenGrass;   //а это все картинки, используемые в программе (пока их 4 штуки)
-	private static Image imageYellowGrass;
+	
+	private static Image imageYoungManyGreenTree;  
+	private static Image imageYoungFewGreenTree;
+	private static Image imageOldManyGreenTree;
+	private static Image imageOldFewGreenTree;
+	private static Image imageVeryYoungTree;
+	
 	private static Image imageLeo;
 	private static Image imageSleepingLeo;
 	private static Image imageUsualGround;
@@ -141,22 +147,11 @@ public class Information {                //этот класс занимается считыванием вс
 	}
 	
 	
-	public static void readGrassFromConsole() {    //аналогично предыдущему методу пока еще не реализован
-		/*linkedListOfGrass.add(new Grass(50,30,120));
-		linkedListOfGrass.add(new Grass(90,10,150));
-		linkedListOfGrass.add(new Grass(200,100,100));
-		linkedListOfGrass.add(new Grass(300,400,125));
-		linkedListOfGrass.add(new Grass(500,320,90));
-		linkedListOfGrass.add(new Grass(600,640,123));
-		linkedListOfGrass.add(new Grass(600,50,124));
-		linkedListOfGrass.add(new Grass(50,200,129));
-		linkedListOfGrass.add(new Grass(400,340,130));
-		linkedListOfGrass.add(new Grass(300,100,100));*/
+	public static void readGrassFromConsole() {
 		linkedListOfGrass.clear();
 		Random rand = new Random();
-		//System.out.println(defaultHeight);
 		for (int i=1;i<=amountGrass;i++) {
-			linkedListOfGrass.add(new Grass(rand.nextInt(defaultWeight),rand.nextInt(defaultHeight), rand.nextInt(500)));
+			linkedListOfGrass.add(new Grass(rand.nextInt(defaultWeight/sizeOfCell),rand.nextInt(defaultHeight/sizeOfCell)));
 		}
 	}
 	
@@ -173,9 +168,12 @@ public class Information {                //этот класс занимается считыванием вс
 	    	   imageSleepingLeoFemale=ImageIO.read(new File("Textures/SleepingLeoFemale.png"));
 	    	   
 	    	   //для травы и земли
-	    	   imageGreenGrass=ImageIO.read(new File("Textures/GreenGrass.png"));
-	    	   imageYellowGrass=ImageIO.read(new File("Textures/YellowGrass.png"));
+	    	   imageYoungManyGreenTree=ImageIO.read(new File("Textures/YoungManyGreenTree.png"));
+	    	   imageYoungFewGreenTree=ImageIO.read(new File("Textures/YoungFewGreenTree.PNG"));
+	    	   imageOldManyGreenTree=ImageIO.read(new File("Textures/OldManyGreenTree.png"));
+	    	   imageOldFewGreenTree=ImageIO.read(new File("Textures/OldFewGreenTree.png"));
 	    	   imageUsualGround=ImageIO.read(new File("Textures/UsualGround.jpg"));
+	    	   imageVeryYoungTree=ImageIO.read(new File("Textures/VeryYoungTree.png"));
 	    	   
 	    	   //Для травоядных
 	    	   imageHerbivore=ImageIO.read(new File("Textures/DonaldDuckHead.png"));
@@ -280,11 +278,20 @@ public static Image getImageSleepingLeo() {
 public static Image getImageLeo() {
 	return imageLeo;
 }
-public static Image getImageGreenGrass() {
-	return imageGreenGrass;
+public static Image getImageYoungManyGreenTree() {
+	return imageYoungManyGreenTree;
 }
-public static Image getImageYellowGrass() {
-	return imageYellowGrass;
+public static Image getImageYoungFewGreenTree() {
+	return imageYoungFewGreenTree;
+}
+public static Image getImageOldManyGreenTree() {
+	return imageOldManyGreenTree;
+}
+public static Image getImageOldFewGreenTree() {
+	return imageOldFewGreenTree;
+}
+public static Image getImageVeryYoungTree() {
+	return imageVeryYoungTree;
 }
 public static Image getImageGround() {
 	return imageUsualGround;
@@ -365,21 +372,25 @@ public static void checkIsHerbivoreBorn() {
 	for (Iterator<Herbivore> current = linkedListOfHerbivores.iterator(); current.hasNext(); ) {
 	    Herbivore currentAnimal = current.next();
 	    Random rand = new Random();
-	    if (currentAnimal.wantToBorn()) {linkedListOfBornedHerbivores.add(
+	    
+	    if (currentAnimal.wantToBorn()) {    
+	    	
+	    	for (int i=1;i<=rand.nextInt(3)+1;i++)
+	    	{ linkedListOfBornedHerbivores.add(
 	    						new Herbivore( rand.nextBoolean(),
-	    								currentAnimal.getXPosition(),
-	    								currentAnimal.getYPosition(),
+	    								currentAnimal.getXPosition()+2*rand.nextInt(Information.getSizeOfCell()-Information.getSizeOfCell()/2),
+	    								currentAnimal.getYPosition()+2*rand.nextInt(Information.getSizeOfCell()-Information.getSizeOfCell()/2),
 	    								60+rand.nextInt(41),
 	    								100,
 	    								100,
 	    								100,
-	    								(float)((currentAnimal.getLegacyStarvationCoefficient()+currentAnimal.getFromWhom().getLegacyStarvationCoefficient())/2),
-	    								(float)((currentAnimal.getLegacyPassionCoefficient()+currentAnimal.getFromWhom().getLegacyPassionCoefficient())/2),
-	    								(float)((currentAnimal.getLegacyExhaustionCoefficient()+currentAnimal.getFromWhom().getLegacyExhaustionCoefficient())/2),
+	    								(float)((currentAnimal.getLegacyStarvationCoefficient()+currentAnimal.getFromWhom().getLegacyStarvationCoefficient())/2   ),
+	    								(float)((currentAnimal.getLegacyPassionCoefficient()+currentAnimal.getFromWhom().getLegacyPassionCoefficient())/2       ),
+	    								(float)((currentAnimal.getLegacyExhaustionCoefficient()+currentAnimal.getFromWhom().getLegacyExhaustionCoefficient())/2      ),
 	    				(float)        (     rand.nextFloat()*0.4+0.1    ),
 	    				(float)        (     rand.nextFloat()*0.2+0.1    ),
 	    				(float)        (     rand.nextFloat()*0.2+0.1    )
-	    						));
+	    						));}
 	    
 	    currentAnimal.setTimeOfPregnant(-1);
 	    currentAnimal.setFromWhom(null);
@@ -396,6 +407,48 @@ public static void checkIsHerbivoreBorn() {
 	
 }
 
+public static void checkIsGrassBorn() {
+	for (Iterator<Grass> current = linkedListOfGrass.iterator(); current.hasNext(); ) {
+	    Grass currentGrass = current.next();
+	    if (currentGrass.wantToBorn()!=-1) {
+	    	switch (currentGrass.wantToBorn()) {
+	    	
+	    	case 0:
+	    		linkedListOfBornedGrass.add( new Grass(currentGrass.getXPosition()+1, currentGrass.getYPosition()));
+	    	break;
+	    	case 1:
+	    		linkedListOfBornedGrass.add( new Grass(currentGrass.getXPosition()+1, currentGrass.getYPosition()-1));
+	    	break;
+	    	case 2:
+	    		linkedListOfBornedGrass.add( new Grass(currentGrass.getXPosition(), currentGrass.getYPosition()-1));
+	    	break;
+	    	case 3:
+	    		linkedListOfBornedGrass.add( new Grass(currentGrass.getXPosition()-1, currentGrass.getYPosition()-1));
+	    	break;
+	    	case 4:
+	    		linkedListOfBornedGrass.add( new Grass(currentGrass.getXPosition()-1, currentGrass.getYPosition()));
+	    	break;
+	    	case 5:
+	    		linkedListOfBornedGrass.add( new Grass(currentGrass.getXPosition()-1, currentGrass.getYPosition()+1));
+	    	break;
+	    	case 6:
+	    		linkedListOfBornedGrass.add( new Grass(currentGrass.getXPosition(), currentGrass.getYPosition()+1));
+	    	break;
+	    	case 7:
+	    		linkedListOfBornedGrass.add( new Grass(currentGrass.getXPosition()+1, currentGrass.getYPosition()+1));
+	    	break;
+	    	}
+	    	currentGrass.setWantToBorn(-1);
+	    }
+	}
+	
+	for (Iterator<Grass> current = linkedListOfBornedGrass.iterator(); current.hasNext(); ) {
+		linkedListOfGrass.add(current.next());
+	}
+	linkedListOfBornedGrass.clear();
+	
+	
+}
 
 public static Image getImageHerbivoreFemaleRun() {
 	// TODO Auto-generated method stub

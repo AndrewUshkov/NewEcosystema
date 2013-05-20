@@ -87,12 +87,25 @@ import javax.swing.*;
 						
 						
 						if (Information.worldCreated()) {
-						for (Iterator<Grass> current = Information.getLinkedListOfGrass().iterator(); current.hasNext(); ) { //аналогично для травы
+						for (Iterator<Grass> current = Information.getLinkedListOfGrass().iterator(); 
+								current.hasNext(); ) {                              //аналогично для травы
+							
 						    Grass val = current.next();
 						    if (val.getGrassImage()==null) return;
+						    if (val.getAge()>val.getStartAge()-20) {
+						    	
+						    	g.drawImage(Information.getImageVeryYoungTree(), 
+										val.getXPosition()*Information.getSizeOfCell(), 
+												val.getYPosition()*Information.getSizeOfCell(),sizeOfCell/2,sizeOfCell/2, null);
+						    	
+						    } else {
 						    g.drawImage(val.getGrassImage(), 
+									val.getXPosition()*Information.getSizeOfCell(), 
+											val.getYPosition()*Information.getSizeOfCell(),sizeOfCell,sizeOfCell, null);
+						    }
+						    /*g.drawImage(val.getGrassImage(), 
 									val.getXPosition(), 
-											val.getYPosition(),sizeOfCell,sizeOfCell, null);
+											val.getYPosition(),sizeOfCell,sizeOfCell, null);*/
 						}
 						
 						

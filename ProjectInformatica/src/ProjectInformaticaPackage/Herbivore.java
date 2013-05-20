@@ -240,7 +240,7 @@ public boolean goToNearestGrass() {
 	if (this.yPosition<=0) {this.yPosition+=Information.getDefaultHeight();}
 	if (nearestDistance<=Information.getSizeOfCell()) {
 		
-		this.starvation+=nearestGrass.getEnergyValue();
+		this.starvation+=nearestGrass.eat();
 		if (this.starvation>100) this.starvation=100;
 			}
 	return true;

@@ -228,8 +228,7 @@ public void goToNearestGrass() {
 	if (this.xPosition<=0) {this.xPosition+=Information.getDefaultWeight();}
 	if (this.yPosition>=Information.getDefaultHeight()) {this.yPosition-=Information.getDefaultHeight();}
 	if (this.yPosition<=0) {this.yPosition+=Information.getDefaultHeight();}
-	if (nearestDistance<=Information.getSizeOfCell()) {this.starvation+=nearestGrass.getEnergyValue();}
-	
+	if (nearestDistance<=Information.getSizeOfCell()) {this.starvation+=nearestGrass.eat();}
 	}
 }
 public boolean wantToBorn() {

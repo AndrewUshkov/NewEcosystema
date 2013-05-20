@@ -13,13 +13,15 @@ Thread grass;
 
 	@Override
 	public void run() {
-		for (Iterator<Grass> current = Information.getLinkedListOfGrass().iterator(); current.hasNext(); ) {
+		for (Iterator<Grass> current = Information.getLinkedListOfGrass().iterator(); //
+				current.hasNext(); ) {
+			
 		    Grass currentGrass = current.next();
 		    if (currentGrass.makeDecision()==false) {
 		        current.remove();
 		    }
 		}
-
+		Information.checkIsGrassBorn();
 	}
 
 }
