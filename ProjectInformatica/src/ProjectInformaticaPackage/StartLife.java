@@ -5,9 +5,6 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
-import java.util.ArrayList;
-import java.util.Scanner;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -16,26 +13,16 @@ import javax.swing.JMenuItem;
 
 class StartLife extends JFrame {
 	public static void main(String[] args) {    //здесь начинает работать программа
-		//int amountPredator=4;
-		//int amountHerbivore;
-		//ArrayList<LifeForm> listOfLifeForms=new ArrayList<LifeForm>();
 		int quantTime;
-		int numberAnimalsInThread=2;
-		int numberOfThreads;
-		Leo a;
-		Leo b;
-		Thread currentPredatorThread;
 		
-		//Information.readPredatorsFromConsole(/*this*/);  //много статических методов считывания информации
-		//Information.readHerbivoreFromConsole();
-		//Information.readGrassFromConsole();
+		//подготовка к запуску (считывание информации)
 		Information.readSizeOfCellFromConsole();
 		Information.loadImages();
+		
 		MainFrame frame=new MainFrame(); //создаем главное окно
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Toolkit kit=Toolkit.getDefaultToolkit();
 		Dimension screenSize=kit.getScreenSize();
-		//frame.setLocation(screenSize.width/2-Information.getDefaultWeight()/2,screenSize.height/2-Information.getDefaultHeight()/2);
 		Image icon=kit.getImage("Textures/IconLeave.jpg");
 		frame.setIconImage(icon);
 		frame.setLocation(0, 0);
@@ -103,32 +90,6 @@ class StartLife extends JFrame {
 		} while (true);
 		
 		
-		
-		
-		/*numberOfThreads=(Information.getLinkedListOfLeos().size()+1)/numberAnimalsInThread;  //в каждом треде максимум 2 хищника, минимум: 1
-		ArrayList<Thread> threads=new ArrayList<Thread>();
-		
-		for (int i=1;i<=numberOfThreads;i++) {
-			a=Information.getLinkedListOfLeos().get(2*(i-1));
-			if (Information.getLinkedListOfLeos().size()>=2*(i-1)+2) b=Information.getLinkedListOfLeos().get(2*(i-1)+1); else b=null;
-			threads.add(new Thread(new PredatorThread(a,b), String.valueOf(i)));
-		}
-		
-		
-		do {
-		for (Iterator<Thread> currentThread = threads.iterator(); currentThread.hasNext(); ) {
-		    currentThread.next().run();
-		}
-		
-		try {
-			quantTime=Information.getQuantTime();
-			if (quantTime>0) {Thread.sleep(quantTime);/*чтобы успеть просмотреть*/ //frame.repaint();}
-			/*else {}
-		
-	} catch (Exception e) {}
-			
-		} while (true);*/
-		
 	}
 }
 class PauseAction implements ActionListener {
@@ -143,7 +104,6 @@ class PauseAction implements ActionListener {
 }
 class CreateAction implements ActionListener {
 	public void actionPerformed(ActionEvent event) {
-		//System.out.println("fvdx");
 		JFrame test=new CreateNewWorld();
 		test.setVisible(true);
 		

@@ -1,16 +1,13 @@
 package ProjectInformaticaPackage;
 
 import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.Random;
 
-import javax.imageio.ImageIO;
 	public class Grass {                 // первоначально считалось, что трава будет как в игре "∆изнь". Ќо ведь в реальности трава или 
 	   private int xPosition;           //деревь€ разрастаютс€, начина€ с некоторого возраста, поэтому алгоритм разрастани€ другой.
 	   private int yPosition;
-       private int timeNewAppears=20;     //задел на будущее
+       private int timeNewAppears=20;    
        private int age;
        private float energyValue;         //сытость листьев
        private float energyQuantity;     //количество листьев (запас энергии)

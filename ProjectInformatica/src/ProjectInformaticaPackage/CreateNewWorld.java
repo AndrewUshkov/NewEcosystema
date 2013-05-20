@@ -38,7 +38,6 @@ public class CreateNewWorld extends JFrame {
 	
 		public CreateNewWorld() {
 			
-			//numberPredators.setText("5");
 			try {
 				imageCreation=ImageIO.read(new File("Textures/Creation.jpg"));
 			} catch (IOException e) {
@@ -75,8 +74,6 @@ public class CreateNewWorld extends JFrame {
 			
 			CreationAction creationNewWorld=new CreationAction(this);
 			enter.addActionListener(creationNewWorld);
-			//WriteTextAction writeText=new WriteTextAction();
-			//option.addMouseListener(writeText);
 			
 		}
 	
@@ -119,7 +116,7 @@ class WriteTextAction implements MouseListener {
 		
 	}
 	public void mouseEntered(MouseEvent e) {
-		//System.out.println("tbtdb\n\n\n\n\n\n\n\\n\n\n\n");
+		
 	}
 	public void mouseExited(MouseEvent e) {
 		

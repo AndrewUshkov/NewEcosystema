@@ -1,9 +1,7 @@
 package ProjectInformaticaPackage;
-import java.io.*;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
-import javax.imageio.*;
 import javax.swing.*;
 
 	class MainFrame extends JFrame {                                   
@@ -21,7 +19,6 @@ import javax.swing.*;
 		int y;
 		int cell=Information.getSizeOfCell();
 		boolean isEvent;
-		//LinkedList<InformationAboutAnimal> listInfo=new LinkedList<InformationAboutAnimal>();
 		InformationAboutAnimal info;
 		public BioPanel() {
 			this.addMouseListener(new MouseListener() {
@@ -51,7 +48,10 @@ import javax.swing.*;
 	private LifeForm findAnimal() {
 		for (Iterator<Leo> current = Information.getLinkedListOfLeos().iterator(); current.hasNext(); ) {
 		    Leo val = current.next();
-		    if ((x>=val.getXPosition())&&(x<=val.getXPosition()+cell)&&(y>=val.getYPosition())&&(y<=val.getYPosition()+cell)) {
+		    if ((x>=val.getXPosition())&&
+		    		(x<=val.getXPosition()+cell)&&
+		    		(y>=val.getYPosition())&&
+		    		(y<=val.getYPosition()+cell)) {
 		    	return val;
 		    }
 		}
@@ -66,7 +66,6 @@ import javax.swing.*;
 	private void showInformationAboutAnimal() {
 		LifeForm animal;
 		if ((animal=this.findAnimal())!=null) {
-		//this.info.setVisible(false);
 			if (info!=null) {info.infoAnimal.setBigCursor(false); info.setVisible(false);}
 		this.info=new InformationAboutAnimal(animal);
 		info.addWindowListener(new WindowAdapter() {
@@ -75,7 +74,6 @@ import javax.swing.*;
 			info.setVisible(false);
 			}
 			});
-		//listInfo.add(inform);
 		info.setVisible(true);
 		}
 	}
@@ -87,25 +85,26 @@ import javax.swing.*;
 						
 						
 						if (Information.worldCreated()) {
-						for (Iterator<Grass> current = Information.getLinkedListOfGrass().iterator(); 
-								current.hasNext(); ) {                              //аналогично для травы
+							for (Iterator<Grass> current = Information.getLinkedListOfGrass().iterator(); current.hasNext(); ) {                              //аналогично для травы
 							
-						    Grass val = current.next();
-						    if (val.getGrassImage()==null) return;
-						    if (val.getAge()>val.getStartAge()-20) {
+								Grass val1 = current.next();
+								if (val1.getGrassImage()==null) return;
+								if (val1.getAge()>val1.getStartAge()-20) {
 						    	
-						    	g.drawImage(Information.getImageVeryYoungTree(), 
-										val.getXPosition()*Information.getSizeOfCell(), 
-												val.getYPosition()*Information.getSizeOfCell(),sizeOfCell/2,sizeOfCell/2, null);
+									g.drawImage(Information.getImageVeryYoungTree(), 
+									val1.getXPosition()*Information.getSizeOfCell(), 
+									val1.getYPosition()*Information.getSizeOfCell(),
+									sizeOfCell/2,sizeOfCell/2, 
+									null);
 						    	
-						    } else {
-						    g.drawImage(val.getGrassImage(), 
-									val.getXPosition()*Information.getSizeOfCell(), 
-											val.getYPosition()*Information.getSizeOfCell(),sizeOfCell,sizeOfCell, null);
+									} else {
+								g.drawImage(val1.getGrassImage(), 
+								val1.getXPosition()*Information.getSizeOfCell(), 
+								val1.getYPosition()*Information.getSizeOfCell(),
+								sizeOfCell,
+								sizeOfCell, 
+								null);
 						    }
-						    /*g.drawImage(val.getGrassImage(), 
-									val.getXPosition(), 
-											val.getYPosition(),sizeOfCell,sizeOfCell, null);*/
 						}
 						
 						
@@ -118,16 +117,26 @@ import javax.swing.*;
 						    if (val.isChild()) {
 						    
 						    		g.drawImage(image,    //вот здесь с помощью getAnimalImage можно в зависимости от состояния объекта (гапример, он спит) ставить разные картинки
-						    				val.getXPosition(), 
-													val.getYPosition(),sizeOfCell*(30-val.timeOfInertion)/30,sizeOfCell*(30-val.timeOfInertion)/30, null);
+						    		val.getXPosition(), 
+									val.getYPosition(),
+									sizeOfCell*(30-val.timeOfInertion)/30,
+									sizeOfCell*(30-val.timeOfInertion)/30,
+									null);
 						    } else
 						    	g.drawImage(image,    //вот здесь с помощью getAnimalImage можно в зависимости от состояния объекта (гапример, он спит) ставить разные картинки
-					    				val.getXPosition(), 
-												val.getYPosition(),sizeOfCell,sizeOfCell, null);
+					    		val.getXPosition(), 
+								val.getYPosition(),
+								sizeOfCell,sizeOfCell, 
+								null);
 						    
 						    
 						    if (val.haveBigCursor()) {
-						    	g.drawImage(Information.getImageBigCursor(), val.getXPosition()-25, val.getYPosition()-25, 25, 25, null);
+						    	g.drawImage(Information.getImageBigCursor(),
+						    	val.getXPosition()-25,
+						    	val.getYPosition()-25,
+						    	25, 
+						    	25, 
+						    	null);
 						    }
 						    
 						}
@@ -141,26 +150,31 @@ import javax.swing.*;
 						    if ((val.isChild())&&(val.isAlive())) {
 						    
 						    		g.drawImage(image,    //вот здесь с помощью getAnimalImage можно в зависимости от состояния объекта (гапример, он спит) ставить разные картинки
-						    				val.getXPosition(), 
-													val.getYPosition(),sizeOfCell*(30-val.timeOfInertion)/30,sizeOfCell*(30-val.timeOfInertion)/30, null);
+						    		val.getXPosition(), 
+									val.getYPosition(),
+									sizeOfCell*(30-val.timeOfInertion)/30,
+									sizeOfCell*(30-val.timeOfInertion)/30, 
+									null);
 						    } else
 						    	g.drawImage(image,    //вот здесь с помощью getAnimalImage можно в зависимости от состояния объекта (гапример, он спит) ставить разные картинки
-					    				val.getXPosition(), 
-												val.getYPosition(),sizeOfCell,sizeOfCell, null);
+					    		val.getXPosition(), 
+								val.getYPosition(),
+								sizeOfCell,sizeOfCell, 
+								null);
 						    
 						    if (val.haveBigCursor()) {
-						    	g.drawImage(Information.getImageBigCursor(), val.getXPosition()-25, val.getYPosition()-25, 25, 25, null);
+						    	g.drawImage(Information.getImageBigCursor(),
+						    	val.getXPosition()-25, 
+						    	val.getYPosition()-25, 
+						    	25, 
+						    	25, 
+						    	null);
 						    }
 						    
 						    
 						}
 						
 						if (isEvent) {this.showInformationAboutAnimal(); isEvent=false;}
-						/*if (!listInfo.isEmpty()) {
-							for (Iterator<InformationAboutAnimal> current = this.listInfo.iterator(); current.hasNext(); ) {
-								current.next().repaintInfo();
-							}
-						}*/
 						if (info!=null) {info.repaintInfo();}
 						
 					}

@@ -3,12 +3,10 @@ package ProjectInformaticaPackage;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import java.util.AbstractSequentialList;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 
@@ -16,7 +14,6 @@ public class Information {                //этот класс занимается считыванием вс
 	private static int amountPredator=4;
 	private static int amountHerbivore;
 	private static int amountGrass;
-	private static ArrayList<Leo> listOfLeos=new ArrayList<Leo>();    //здесь я написал коллекции животных индексные и ссылочные, но в данный момент во всей программе используются только ссылочные коллекции
 	private static ArrayList<Herbivore> listOfHerbivores=new ArrayList<Herbivore>();
 	private static LinkedList<Leo> linkedListOfLeos=new LinkedList<Leo>();  //ведь скорость перебора всех элементов выше именнно в ссылочных linked коллекциях
 	private static LinkedList<Grass> linkedListOfGrass=new LinkedList<Grass>();  //аналогично эта linked коллекция содержит все объекты травы
@@ -63,22 +60,11 @@ public class Information {                //этот класс занимается считыванием вс
 
 	private static boolean worldCreated=false;
 	
-	//private static boolean isEvent=false;
 	
-	public static void readPredatorsFromConsole(/*MainFrame frame*/) {    //понятно что делает. Пока что не реализован ввод данных  с клавиатуры
-		//Scanner in=new Scanner(System.in);
-		
-		/*for (int i=0;i<amountPredator;i++) {
-			System.out.println((i+1)+"-ые координаты:");
-			LifeForm k=new Leo(true, in.nextInt(), in.nextInt(),100,50,100,100,1,0,3,0,0,0);
-			listOfLifeForms.add(k);
-			linkedListOfLifeForms.add(k);
-		}*/
-		//in.close();
+	public static void readPredatorsFromConsole() {   
 		
 		linkedListOfLeos.clear();
 		Random rand = new Random();
-		//System.out.println(defaultHeight);
 		for (int i=1;i<=amountPredator;i++) {
 			linkedListOfLeos.add(new Leo(rand.nextBoolean(), 
 					rand.nextInt(defaultWeight), 
@@ -95,39 +81,13 @@ public class Information {                //этот класс занимается считыванием вс
 		}
 		
 		
-		
-		
-	                            //IfMale   X    Y    Age  starv pass exha        SC     PC      EC
-		//linkedListOfLeos.add(new Leo(true, 100, 200, 400, 100, 100, 100,     (float)1,(float)0.5,2,   1,(float)0.2,1));
-		//linkedListOfLeos.add(new Leo(false, 50, 400,  400, 100, 85,  20,      (float)1,(float)0.3,1,   3,(float)0.2,1));
-		//linkedListOfLeos.add(new Leo(true, 500, 200,  400, 100, 20,  70,      (float)1,(float)0.3,3,   3,(float)0.2,1));
-		//linkedListOfLeos.add(new Leo(false, 200, 100,  400, 100, 90,  50,     (float)1,(float)0.5,3,   1,(float)0.1,1));
-	
-	
-		/*Iterator<LifeForm> currentLifeForm = listOfLifeForms.iterator();   // проверка, что делает итератор
-		while(currentLifeForm.hasNext()) {
-			System.out.println(currentLifeForm.next().getXPosition()+" X");
-			System.out.println(currentLifeForm.next().getYPosition()+" Y");
-			
-		}
-		
-		Iterator<LifeForm> currentNewLifeForm = linkedListOfLifeForms.iterator();   // проверка, что делает итератор
-		while(currentNewLifeForm.hasNext()) {
-			System.out.println(currentNewLifeForm.next().getXPosition()+" LX");
-			System.out.println(currentNewLifeForm.next().getYPosition()+" LY");
-			
-		}*/
 	}
 	
 	
 	public static void readHerbivoreFromConsole() {
-		/*linkedListOfHerbivores.add(new Herbivore(true, 200, 100, 400, 100, 100, 100,     (float)1,(float)0.5,2,   1,(float)0.2,1));
-		linkedListOfHerbivores.add(new Herbivore(false, 150, 300,  400, 100, 85,  20,      (float)1,(float)0.3,1,   3,(float)0.2,1));
-		linkedListOfHerbivores.add(new Herbivore(true, 400, 300,  400, 100, 20,  70,      (float)1,(float)0.3,3,   3,(float)0.2,1));
-		linkedListOfHerbivores.add(new Herbivore(false, 300, 200,  400, 100, 90,  50,     (float)1,(float)0.5,3,   1,(float)0.1,1));*/
+	
 	linkedListOfHerbivores.clear();
 		Random rand = new Random();
-		//System.out.println(defaultHeight);
 		for (int i=1;i<=amountHerbivore;i++) {
 			linkedListOfHerbivores.add(new Herbivore(rand.nextBoolean(), 
 					rand.nextInt(defaultWeight), 
@@ -198,7 +158,7 @@ public class Information {                //этот класс занимается считыванием вс
 	       catch (IOException e) {System.out.println("Can't read file");}
 	       }
 	
-	public static void readSizeOfCellFromConsole() {      //считывать будет в будущем размер иконок
+	public static void readSizeOfCellFromConsole() {   
 		sizeOfCell=50;	
 	}
 	
@@ -206,9 +166,6 @@ public class Information {                //этот класс занимается считыванием вс
 		return amountPredator;
 	}
 	
-	public static ArrayList<Leo> getListOfLeos() {        //сейчас не используется
-		return listOfLeos;
-	}
 	public static LinkedList<Leo> getLinkedListOfLeos() {   //через этот статический метод те объекты, которым нужно, смогут получить досткп к коллекции животных
 		return linkedListOfLeos;
 	}
@@ -262,7 +219,6 @@ public class Information {                //этот класс занимается считыванием вс
 	
 public static void readDefaultHeightFromConsole(MainFrame frame) {
 				defaultHeight=frame.getSize().height;
-				//System.out.println(defaultHeight);
 	}
 
 public static int getDefaultWeight() {
@@ -451,7 +407,6 @@ public static void checkIsGrassBorn() {
 }
 
 public static Image getImageHerbivoreFemaleRun() {
-	// TODO Auto-generated method stub
 	return imageHerbivoreFemaleRun;
 }
 
@@ -459,7 +414,6 @@ public static Image getImageBigCursor() {
 	return imageBigCursor;
 }
 public static Image getImageHerbivoreRun() {
-	// TODO Auto-generated method stub
 	return imageHerbivoreRun;
 }
 
@@ -480,10 +434,4 @@ public static boolean worldCreated() {
 public static void setWorldCreated(boolean b) {
 	worldCreated=b;
 }
-/*public static boolean isEvent() {
-	return isEvent;
-}
-public static void setIsEvent(boolean b) {
-	isEvent=b;
-}*/
 }

@@ -13,7 +13,6 @@ public interface LifeForm {          //это интерфейс для predator и herbivore
 	int getXPosition();
 	void setYPosition(int newXPosition);
 	int getYPosition();
-	void setStarvationCoefficient(float newSCoef);
 	float getStarvationCoefficient();
 	void setPassionCoefficient(float newPCoef);
 	float getLegacyStarvationCoefficient();
@@ -26,6 +25,5 @@ public interface LifeForm {          //это интерфейс для predator и herbivore
 	int getPreviousAction();
 	void setBigCursor(boolean a);
 	boolean haveBigCursor();
-	//CoordinatesXY goToNearestPredator();
 	boolean makeDecision();   //любой predator или herbivore должен иметь этот метод, чтобы его вызывали в цикле перебора всех объектов из коллекции
 }
