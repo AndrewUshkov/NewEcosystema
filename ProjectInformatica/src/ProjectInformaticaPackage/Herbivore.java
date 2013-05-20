@@ -337,7 +337,53 @@ if (this.isMale()) {
 			}	return true;
 		}
 	} else return false;
-} else return false;
+} else
+{
+	int numberFemaleChildren=0;
+	if (Information.getLinkedListOfHerbivores().size()>1) {
+		//LifeForm nearestHerbivore=Information.getLinkedListOfLifeForms().getFirst();
+		Herbivore nearestHerbivore=null;
+		Herbivore currentHerbivore;
+		int currentDistance=-1;
+		int nearestDistance=-1;
+		for (Iterator<Herbivore> current = Information.getLinkedListOfHerbivores().iterator(); current.hasNext(); ) {
+			currentHerbivore=current.next();
+			if ((currentHerbivore.isChild())&&(currentHerbivore.isMale())) {numberFemaleChildren++;}   //�������, ���� �� "������������������" ���������� �����
+			if (    (nearestHerbivore==null)&&( ((currentHerbivore.isMale()))          )&&(!currentHerbivore.isChild())
+					&& (currentHerbivore.timeOfPregnant==-1)
+								&& (!currentHerbivore.equals(badFemale))
+					) 
+			{
+				nearestHerbivore=currentHerbivore; 
+				nearestDistance=(nearestHerbivore.getXPosition()-this.xPosition)*(nearestHerbivore.getXPosition()-this.xPosition)+(nearestHerbivore.getYPosition()-this.yPosition)*(nearestHerbivore.getYPosition()-this.yPosition);
+					}
+			if ((nearestHerbivore!=null)&&(nearestHerbivore!=currentHerbivore)  &&
+					    (currentHerbivore.isMale())&&(!currentHerbivore.isChild())&& (currentHerbivore.timeOfPregnant==-1) && (!currentHerbivore.equals(badFemale))         ) {
+				currentDistance=(currentHerbivore.getXPosition()-this.xPosition)*(currentHerbivore.getXPosition()-this.xPosition)+(currentHerbivore.getYPosition()-this.yPosition)*(currentHerbivore.getYPosition()-this.yPosition);
+				if (currentDistance<nearestDistance) {nearestDistance=currentDistance; nearestHerbivore=currentHerbivore;}
+				
+			}
+			
+		}
+		
+		
+		
+		if ((nearestHerbivore==null)&&(numberFemaleChildren==0)) {this.timeOfInertion=0; return false;} else {
+			if (nearestHerbivore!=null) {
+			if (nearestHerbivore.getXPosition()>=this.xPosition) {this.xPosition+=4;} else this.xPosition-=4;
+			if (nearestHerbivore.getYPosition()>=this.yPosition) {this.yPosition+=4;} else this.yPosition-=4;
+			if (this.xPosition>=Information.getDefaultWeight()) {this.xPosition-=Information.getDefaultWeight();}
+			if (this.xPosition<=0) {this.xPosition+=Information.getDefaultWeight();}
+			if (this.yPosition>=Information.getDefaultHeight()) {this.yPosition-=Information.getDefaultHeight();}
+			if (this.yPosition<=0) {this.yPosition+=Information.getDefaultHeight();}
+			if (      (nearestDistance<=Information.getSizeOfCell())&&
+									(!this.isMale())		) {this.tryMakeChildren(nearestHerbivore);}
+			return true;
+			
+			}	return true;
+		}
+	} else return false;
+}
 }
 
 private void bornNewHerbivore() {
