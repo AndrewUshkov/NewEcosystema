@@ -259,22 +259,22 @@ public class Herbivore implements LifeForm {
 	}
 
 	public boolean feelHungry() {
-		
+		int size=Information.getSizeOfCell();
 		//ищем ближайшую траву
 		if (!Information.getLinkedListOfGrass().isEmpty()) {
 			Grass nearestGrass = Information.getLinkedListOfGrass().getFirst();
-			int nearestDistance = (nearestGrass.getXPosition() - this.xPosition)
-					* (nearestGrass.getXPosition() - this.xPosition)
-					+ (nearestGrass.getYPosition() - this.yPosition)
-					* (nearestGrass.getYPosition() - this.yPosition);
+			int nearestDistance = (nearestGrass.getXPosition()*size - this.xPosition)
+					* (nearestGrass.getXPosition()*size - this.xPosition)
+					+ (nearestGrass.getYPosition()*size - this.yPosition)
+					* (nearestGrass.getYPosition()*size - this.yPosition);
 			int currentDistance;
 			Grass currentGrass;
 			for (Iterator<Grass> current = Information.getLinkedListOfGrass().iterator(); current.hasNext();) {
 				currentGrass = current.next();
-				currentDistance = (currentGrass.getXPosition() - this.xPosition)
-						* (currentGrass.getXPosition() - this.xPosition)
-						+ (currentGrass.getYPosition() - this.yPosition)
-						* (currentGrass.getYPosition() - this.yPosition);
+				currentDistance = (currentGrass.getXPosition()*size - this.xPosition)
+						* (currentGrass.getXPosition()*size - this.xPosition)
+						+ (currentGrass.getYPosition()*size - this.yPosition)
+						* (currentGrass.getYPosition()*size - this.yPosition);
 
 				if (currentDistance < nearestDistance) {
 					nearestGrass = currentGrass;
@@ -284,11 +284,11 @@ public class Herbivore implements LifeForm {
 			
 			//теперь мы знаем ближайшую траву, и движемся к ней на шажок
 
-			if (nearestGrass.getXPosition() >= this.xPosition) {
+			if (nearestGrass.getXPosition()*size >= this.xPosition) {
 				this.xPosition += 4;
 			} else
 				this.xPosition -= 4;
-			if (nearestGrass.getYPosition() >= this.yPosition) {
+			if (nearestGrass.getYPosition()*size >= this.yPosition) {
 				this.yPosition += 4;
 			} else
 				this.yPosition -= 4;
