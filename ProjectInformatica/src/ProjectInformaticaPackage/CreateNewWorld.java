@@ -30,7 +30,7 @@ public class CreateNewWorld extends JFrame {
 	JLabel labelGrass=new JLabel("Количество травы:");
 	JButton cansel=new JButton("Закрыть");
 	JButton enter=new JButton("Готово");
-	JButton option=new JButton("Дополнительно..");
+	//JButton option=new JButton("Дополнительно..");
 	
 	int intNumberPredators;
 	int intNumberHerbivores;
@@ -55,7 +55,7 @@ public class CreateNewWorld extends JFrame {
 			add(labelGrass);
 			add(cansel);
 			add(enter);
-			add(option);
+			//add(option);
 			
 			//расположение элементов в окне
 			labelPredator.setBounds(5,5,150,20);
@@ -64,7 +64,7 @@ public class CreateNewWorld extends JFrame {
 			numberPredators.setBounds(180, 5, 90, 20);
 			numberHerbivores.setBounds(180,30,90,20);
 			numberGrass.setBounds(180,55,90,20);
-			option.setBounds(5, 100, 150, 20);
+			//option.setBounds(5, 100, 150, 20);
 			enter.setBounds(170, 100, 100, 20);
 			
 			//первоначальные значения

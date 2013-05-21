@@ -138,7 +138,10 @@ public Image getAnimalImage() {
 	}
 }
 public boolean femaleAgree() {
-	if ((passion<=50)&&(this.previousAction!=3)) return true; 
+	if ((passion<=50)) {
+		this.timeOfInertion=0;
+		return true; 
+	}
 	return false;
 }
 public void setFromWhom(Leo FromWhom) {
@@ -213,8 +216,8 @@ private boolean feelHungry() {
 }
 private void eatHerbivore(Herbivore victim) {
 	if (victim.isAlive()) victim.kill();
-	victim.eatMeat(5);
-	this.starvation+=5;
+	victim.eatMeat(10);
+	this.starvation+=2;
 	if (this.starvation>100) this.starvation=100;
 }
 private void becomePregnant() {
@@ -334,7 +337,7 @@ private int getDecision() {        // здесь происходит сравнивание всех шкал и о
 	
 	if (this.timeOfPregnant==0) {return 5;}
 	
-	if (this.starvation>70) {
+	if (this.starvation>65) {
 		this.wish[0]=new AnimalWish(1,100);
 	} else this.wish[0]=new AnimalWish(1,this.starvation);
 	    

@@ -69,11 +69,11 @@ public class Information {                //этот класс занимается считыванием вс
 			linkedListOfLeos.add(new Leo(rand.nextBoolean(), 
 					rand.nextInt(defaultWeight), 
 					rand.nextInt(defaultHeight), 
-						100+rand.nextInt(400), 
+						1500+rand.nextInt(400), 
 							100, 100, 100,    
-							(float)        (     rand.nextFloat()*0.4+0.1    ),
+							(float)        (     rand.nextFloat()*0.075+0.0375    ),
 							(float)        (     rand.nextFloat()*0.2+0.1    ),
-							(float)        (     rand.nextFloat()*0.1+0.2    ),
+							(float)        (     rand.nextFloat()*0.05+0.1    ),
 			(float)        (     rand.nextFloat()*0.4+0.1    ),
 			(float)        (     rand.nextFloat()*0.2+0.1    ),
 			(float)        (     rand.nextFloat()*0.2+0.1    )
@@ -92,7 +92,7 @@ public class Information {                //этот класс занимается считыванием вс
 			linkedListOfHerbivores.add(new Herbivore(rand.nextBoolean(), 
 					rand.nextInt(defaultWeight), 
 					rand.nextInt(defaultHeight), 
-						100+rand.nextInt(400), 
+						200, 
 							100, 100, 100,    
 							(float)        (     rand.nextFloat()*0.4+0.1    ),
 							(float)        (     rand.nextFloat()*0.2+0.1    ),
@@ -187,13 +187,13 @@ public class Information {                //этот класс занимается считыванием вс
 		    Random rand = new Random();
 		    if (currentAnimal.wantToBorn()) {   
 		    	
-		    	for (int i=1;i<=rand.nextInt(3)+1;i++)
+		    	for (int i=1;i<=rand.nextInt(1)+1;i++)
 		    	{ linkedListOfBornedLeos.add(
 		    						new Leo( rand.nextBoolean(),
 		    								currentAnimal.getXPosition()+2*rand.nextInt(Information.getSizeOfCell()-Information.getSizeOfCell()/2),
 		    								currentAnimal.getYPosition()+2*rand.nextInt(Information.getSizeOfCell()-Information.getSizeOfCell()/2),
-		    								60+rand.nextInt(41),
-		    								100+rand.nextInt(300),
+		    								1500+rand.nextInt(41),
+		    								50,
 		    								100,
 		    								100,
 		    								(float)((currentAnimal.getLegacyStarvationCoefficient()
@@ -210,7 +210,7 @@ public class Information {                //этот класс занимается считыванием вс
 		    										+rand.nextFloat()*currentAnimal.getLegacyExhaustionCoefficient()
 		    										-currentAnimal.getLegacyExhaustionCoefficient()/2
 		    										)/2      ),
-		    				(float)        (     rand.nextFloat()*0.4+0.1    ),
+		    				(float)        (     rand.nextFloat()*0.075+0.0375    ),
 		    				(float)        (     rand.nextFloat()*0.2+0.1    ),
 		    				(float)        (     rand.nextFloat()*0.2+0.1    )
 		    						));}
@@ -343,13 +343,13 @@ public static void checkIsHerbivoreBorn() {
 	    
 	    if (currentAnimal.wantToBorn()) {    
 	    	
-	    	for (int i=1;i<=rand.nextInt(3)+1;i++)
+	    	for (int i=1;i<=rand.nextInt(5)+1;i++)
 	    	{ linkedListOfBornedHerbivores.add(
 	    						new Herbivore( rand.nextBoolean(),
 	    								currentAnimal.getXPosition()+2*rand.nextInt(Information.getSizeOfCell()-Information.getSizeOfCell()/2),
 	    								currentAnimal.getYPosition()+2*rand.nextInt(Information.getSizeOfCell()-Information.getSizeOfCell()/2),
-	    								60+rand.nextInt(41),
-	    								100+rand.nextInt(300),
+	    								125,
+	    								100,
 	    								100,
 	    								100,
 	    								(float)((currentAnimal.getLegacyStarvationCoefficient()
