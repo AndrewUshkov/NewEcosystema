@@ -356,11 +356,12 @@ public class Herbivore implements LifeForm {
 
 	}
 
-	private boolean feelPassion(Herbivore badFemale) 
+private boolean feelPassion(Herbivore badFemale) 
 {
 		if (this.isMale()) {     
-			int numberMaleChildren = 0;           
-			if (Information.getLinkedListOfHerbivores().size() > 1) {
+			int numberFemaleChildren = 0;           
+			if (Information.getLinkedListOfHerbivores().size() > 1) 
+			{
 				Herbivore nearestHerbivore = null;
 				Herbivore currentHerbivore;
 				int currentDistance = -1;
@@ -369,14 +370,15 @@ public class Herbivore implements LifeForm {
 						.iterator(); current.hasNext();) {
 					currentHerbivore = current.next();
 					if ((currentHerbivore.isChild())
-							&& (currentHerbivore.isMale())) {
-						numberMaleChildren++;
+							&& (!currentHerbivore.isMale())) {
+						numberFemaleChildren++;
 					}    
 					if ((nearestHerbivore == null)   
-							&& (currentHerbivore.isMale())
+							&& (!currentHerbivore.isMale())
 							&& (!currentHerbivore.isChild())
 							&& (currentHerbivore.timeOfPregnant == -1)
-							&& (!currentHerbivore.equals(badFemale))) {    
+							&& (!currentHerbivore.equals(badFemale))) 
+					{    
 						nearestHerbivore = currentHerbivore;
 						nearestDistance = (nearestHerbivore.getXPosition() - this.xPosition)
 								* (nearestHerbivore.getXPosition() - this.xPosition)
@@ -385,7 +387,7 @@ public class Herbivore implements LifeForm {
 					}
 					if ((nearestHerbivore != null)
 							&& (nearestHerbivore != currentHerbivore)
-							&& (currentHerbivore.isMale())
+							&& (!currentHerbivore.isMale())
 							&& (!currentHerbivore.isChild())
 							&& (currentHerbivore.timeOfPregnant == -1)
 							&& (!currentHerbivore.equals(badFemale))) {
@@ -402,7 +404,7 @@ public class Herbivore implements LifeForm {
 
 				}
 
-				if ((nearestHerbivore == null) && (numberMaleChildren == 0)) {  
+				if ((nearestHerbivore == null) && (numberFemaleChildren == 0)) {  
 					this.timeOfInertion = 0;
 					return false;
 				} else {   
@@ -436,12 +438,13 @@ public class Herbivore implements LifeForm {
 					}
 					return true;
 				}
-			} else
+			} 
+			else
 				return false;
 		} 
 else
 {
-	int numberFemaleChildren = 0;           
+	int numberMaleChildren = 0;           
 
 	if (Information.getLinkedListOfHerbivores().size() > 1) {
 		Herbivore nearestHerbivore = null;
@@ -452,14 +455,14 @@ else
 				.iterator(); current.hasNext();) {
 			currentHerbivore = current.next();
 			if ((currentHerbivore.isChild())
-					&& (!currentHerbivore.isMale())) {
-				numberFemaleChildren++;
+					&& (currentHerbivore.isMale())) {
+				numberMaleChildren++;
 			}                         
 			if ((nearestHerbivore == null)   
-					&& (!currentHerbivore.isMale())
+					&& (currentHerbivore.isMale())
 					&& (!currentHerbivore.isChild())
-					&& (currentHerbivore.timeOfPregnant == -1)
-					&& (!currentHerbivore.equals(badFemale))) {    
+					&& (currentHerbivore.timeOfPregnant == -1))
+					 {    
 				nearestHerbivore = currentHerbivore;
 				nearestDistance = (nearestHerbivore.getXPosition() - this.xPosition)
 						* (nearestHerbivore.getXPosition() - this.xPosition)
@@ -468,10 +471,10 @@ else
 			}
 			if ((nearestHerbivore != null)
 					&& (nearestHerbivore != currentHerbivore)
-					&& (!currentHerbivore.isMale())
+					&& (currentHerbivore.isMale())
 					&& (!currentHerbivore.isChild())
-					&& (currentHerbivore.timeOfPregnant == -1)
-					&& (!currentHerbivore.equals(badFemale))) {
+					&& (currentHerbivore.timeOfPregnant == -1)) 
+			{
 				currentDistance = (currentHerbivore.getXPosition() - this.xPosition)
 						* (currentHerbivore.getXPosition() - this.xPosition)
 						+ (currentHerbivore.getYPosition() - this.yPosition)
@@ -485,7 +488,7 @@ else
 
 		}
 
-		if ((nearestHerbivore == null) && (numberFemaleChildren == 0)) {  //самок нет и нет подрастающих самок
+		if ((nearestHerbivore == null) && (numberMaleChildren == 0)) {  
 			this.timeOfInertion = 0;
 			return false;
 		} else {       
@@ -510,17 +513,13 @@ else
 				if (this.yPosition <= 0) {
 					this.yPosition += Information.getDefaultHeight();
 				}
-				if ((nearestDistance <= Information.getSizeOfCell())
-						&& (!this.isMale())) {
-					this.tryMakeChildren(nearestHerbivore);
-				}
 				return true;
 
 			}
 			return true;
 		}
 	} else
-		return false;
+return false;
 }
 			
 	}
