@@ -185,30 +185,42 @@ public class Information {                //этот класс занимается считыванием вс
 		for (Iterator<Leo> current = linkedListOfLeos.iterator(); current.hasNext(); ) {
 		    Leo currentAnimal = current.next();
 		    Random rand = new Random();
-		    if (currentAnimal.wantToBorn()) {linkedListOfBornedLeos.add(
+		    if (currentAnimal.wantToBorn()) {   
+		    	
+		    	for (int i=1;i<=rand.nextInt(3)+1;i++)
+		    	{ linkedListOfBornedLeos.add(
 		    						new Leo( rand.nextBoolean(),
-		    								currentAnimal.getXPosition(),
-		    								currentAnimal.getYPosition(),
-		    								100+rand.nextInt(400),
+		    								currentAnimal.getXPosition()+2*rand.nextInt(Information.getSizeOfCell()-Information.getSizeOfCell()/2),
+		    								currentAnimal.getYPosition()+2*rand.nextInt(Information.getSizeOfCell()-Information.getSizeOfCell()/2),
+		    								60+rand.nextInt(41),
+		    								100+rand.nextInt(300),
 		    								100,
 		    								100,
-		    								100,
-		    								(float)((currentAnimal.getLegacyStarvationCoefficient()+currentAnimal.getFromWhom().getLegacyStarvationCoefficient())/2),
-		    								(float)((currentAnimal.getLegacyPassionCoefficient()+currentAnimal.getFromWhom().getLegacyPassionCoefficient())/2),
-		    								(float)((currentAnimal.getLegacyExhaustionCoefficient()+currentAnimal.getFromWhom().getLegacyExhaustionCoefficient())/2),
+		    								(float)((currentAnimal.getLegacyStarvationCoefficient()
+		    										+currentAnimal.getFromWhom().getLegacyStarvationCoefficient()
+		    										+rand.nextFloat()*currentAnimal.getLegacyStarvationCoefficient()
+		    										-currentAnimal.getLegacyStarvationCoefficient()/2)/2   ),
+		    								(float)((currentAnimal.getLegacyPassionCoefficient()
+		    										+currentAnimal.getFromWhom().getLegacyPassionCoefficient()
+		    										+rand.nextFloat()*currentAnimal.getLegacyPassionCoefficient()
+		    										-currentAnimal.getLegacyPassionCoefficient()/2
+		    										)/2 ),
+		    								(float)((currentAnimal.getLegacyExhaustionCoefficient()
+		    										+currentAnimal.getFromWhom().getLegacyExhaustionCoefficient()
+		    										+rand.nextFloat()*currentAnimal.getLegacyExhaustionCoefficient()
+		    										-currentAnimal.getLegacyExhaustionCoefficient()/2
+		    										)/2      ),
 		    				(float)        (     rand.nextFloat()*0.4+0.1    ),
 		    				(float)        (     rand.nextFloat()*0.2+0.1    ),
 		    				(float)        (     rand.nextFloat()*0.2+0.1    )
-		    						));
+		    						));}
 		    
 		    currentAnimal.setTimeOfPregnant(-1);
 		    currentAnimal.setFromWhom(null);
 		    currentAnimal.setWantToBorn(false);
 		    
-		    						}
-		    
+		    						 }
 		}
-		
 		for (Iterator<Leo> current = linkedListOfBornedLeos.iterator(); current.hasNext(); ) {
 			linkedListOfLeos.add(current.next());
 		}
@@ -337,12 +349,23 @@ public static void checkIsHerbivoreBorn() {
 	    								currentAnimal.getXPosition()+2*rand.nextInt(Information.getSizeOfCell()-Information.getSizeOfCell()/2),
 	    								currentAnimal.getYPosition()+2*rand.nextInt(Information.getSizeOfCell()-Information.getSizeOfCell()/2),
 	    								60+rand.nextInt(41),
+	    								100+rand.nextInt(300),
 	    								100,
 	    								100,
-	    								100,
-	    								(float)((currentAnimal.getLegacyStarvationCoefficient()+currentAnimal.getFromWhom().getLegacyStarvationCoefficient())/2   ),
-	    								(float)((currentAnimal.getLegacyPassionCoefficient()+currentAnimal.getFromWhom().getLegacyPassionCoefficient())/2       ),
-	    								(float)((currentAnimal.getLegacyExhaustionCoefficient()+currentAnimal.getFromWhom().getLegacyExhaustionCoefficient())/2      ),
+	    								(float)((currentAnimal.getLegacyStarvationCoefficient()
+	    										+currentAnimal.getFromWhom().getLegacyStarvationCoefficient()
+	    										+rand.nextFloat()*currentAnimal.getLegacyStarvationCoefficient()
+	    										-currentAnimal.getLegacyStarvationCoefficient()/2)/2   ),
+	    								(float)((currentAnimal.getLegacyPassionCoefficient()
+	    										+currentAnimal.getFromWhom().getLegacyPassionCoefficient()
+	    										+rand.nextFloat()*currentAnimal.getLegacyPassionCoefficient()
+	    										-currentAnimal.getLegacyPassionCoefficient()/2
+	    										)/2 ),
+	    								(float)((currentAnimal.getLegacyExhaustionCoefficient()
+	    										+currentAnimal.getFromWhom().getLegacyExhaustionCoefficient()
+	    										+rand.nextFloat()*currentAnimal.getLegacyExhaustionCoefficient()
+	    										-currentAnimal.getLegacyExhaustionCoefficient()/2
+	    										)/2      ),
 	    				(float)        (     rand.nextFloat()*0.4+0.1    ),
 	    				(float)        (     rand.nextFloat()*0.2+0.1    ),
 	    				(float)        (     rand.nextFloat()*0.2+0.1    )

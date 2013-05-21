@@ -51,7 +51,7 @@ public void setLegacyExhaustionCoefficient(float legacyExhaustionCoefficient) {
 }
 
 
-public Leo (/*MainFrame window, */boolean IfMale, int startXPosition, int startYPosition, float startAge, 
+public Leo (boolean IfMale, int startXPosition, int startYPosition, float startAge, 
 						float startStarvation, float startPassion, float startExhaustion,
 								float startStarvationCoefficient, float startPassionCoefficient, float startExhaustionCoefficient,
 										float legacyStarvationCoefficient, float legacyPassionCoefficient, float legacyExhaustionCoefficient) {
